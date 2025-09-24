@@ -19,12 +19,25 @@ const ProductosPage: React.FC = () => {
         setLoading(true);
         setError(null);
 
-        const productos = await productosApi.listarTodos();
+        console.log("Iniciando carga de productos..."); // Debug log
+        const response = await productosApi.listarTodos();
+        console.log("API Response:", response); // Debug log
 
         if (isSubscribed) {
-          if (productos) {
-            setProductos(Array.isArray(productos) ? productos : []);
+          if (response) {
+            // Debug logs to understand the response structure
+            console.log("Productos Data:", response); // Debug log
+            console.log("Tipo de response:", typeof response); // Debug log
+            console.log("Contenido de data:", response.data); // Debug log
+
+            // Use response.data which contains the actual array of products
+            const productosArray = response.data ?? [];
+
+            console.log("Array final de productos:", productosArray); // Debug log
+            setProductos(productosArray);
+            console.log("Estado actualizado con productos:", productosArray); // Debug log
           } else {
+            console.log("No response from API"); // Debug log
             setError("Error al cargar los productos");
             setProductos([]);
           }

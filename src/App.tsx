@@ -12,17 +12,17 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/productos" element={<ProductosPage />} />
-        <Route 
-          path="/clientes" 
-          element={<ComingSoonPage title="Página de Clientes" />} 
+        <Route
+          path="/clientes"
+          element={<ComingSoonPage title="Página de Clientes" />}
         />
-        <Route 
-          path="/configuracion" 
-          element={<ComingSoonPage title="Configuración" />} 
+        <Route
+          path="/configuracion"
+          element={<ComingSoonPage title="Configuración" />}
         />
         {/* Catch all route for 404 */}
-        <Route 
-          path="*" 
+        <Route
+          path="*"
           element={
             <div className="text-center p-6">
               <h2 className="text-2xl text-600">Página no encontrada</h2>
@@ -30,7 +30,7 @@ const App: React.FC = () => {
                 La página que estás buscando no existe.
               </p>
             </div>
-          } 
+          }
         />
       </Routes>
     </Layout>
