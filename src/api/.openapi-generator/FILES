@@ -1,0 +1,16 @@
+.gitignore
+.npmignore
+.openapi-generator-ignore
+api.ts
+base.ts
+common.ts
+configuration.ts
+docs/ClientesApi.md
+docs/CreateProductoDto.md
+docs/MonedaConfigDto.md
+docs/PagedResponse.md
+docs/ProductoDto.md
+docs/ProductosApi.md
+docs/UpdateProductoDto.md
+git_push.sh
+index.ts
