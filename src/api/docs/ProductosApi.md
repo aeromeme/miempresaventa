@@ -63,9 +63,9 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**200** | Producto actualizado exitosamente |  -  |
-|**404** | Producto no encontrado |  -  |
 |**400** | Datos de entrada inválidos |  -  |
+|**404** | Producto no encontrado |  -  |
+|**200** | Producto actualizado exitosamente |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -116,8 +116,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**200** | Búsqueda realizada exitosamente |  -  |
 |**500** | Error interno al realizar la búsqueda |  -  |
+|**200** | Búsqueda realizada exitosamente |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -169,8 +169,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**201** | Producto creado exitosamente |  -  |
 |**400** | Datos de entrada inválidos |  -  |
+|**201** | Producto creado exitosamente |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -221,8 +221,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**404** | Producto no encontrado |  -  |
 |**204** | Producto eliminado exitosamente |  -  |
+|**404** | Producto no encontrado |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -266,8 +266,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**200** | Lista de productos obtenida exitosamente |  -  |
 |**500** | Error interno al obtener los productos |  -  |
+|**200** | Lista de productos obtenida exitosamente |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -363,8 +363,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**200** | Producto encontrado exitosamente |  -  |
 |**404** | Producto no encontrado |  -  |
+|**200** | Producto encontrado exitosamente |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

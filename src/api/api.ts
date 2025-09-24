@@ -195,14 +195,13 @@ export const ClientesApiAxiosParamCreator = function (configuration?: Configurat
         /**
          * Obtiene una lista paginada de clientes aplicando filtros por nombre y/o correo electrónico
          * @summary Buscar clientes con filtros combinados
-         * @param {string} [nombre] Texto a buscar en el nombre del cliente
-         * @param {string} [correo] Texto a buscar en el correo electrónico
+         * @param {string} [query] Texto a buscar en el nombre o correo del cliente
          * @param {number} [page] Número de página (inicia en 0)
          * @param {number} [size] Cantidad de elementos por página
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        obtenerClientesFiltrados: async (nombre?: string, correo?: string, page?: number, size?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        obtenerClientesFiltrados: async (query?: string, page?: number, size?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v1/clientes/buscar`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -215,12 +214,8 @@ export const ClientesApiAxiosParamCreator = function (configuration?: Configurat
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (nombre !== undefined) {
-                localVarQueryParameter['nombre'] = nombre;
-            }
-
-            if (correo !== undefined) {
-                localVarQueryParameter['correo'] = correo;
+            if (query !== undefined) {
+                localVarQueryParameter['query'] = query;
             }
 
             if (page !== undefined) {
@@ -362,15 +357,14 @@ export const ClientesApiFp = function(configuration?: Configuration) {
         /**
          * Obtiene una lista paginada de clientes aplicando filtros por nombre y/o correo electrónico
          * @summary Buscar clientes con filtros combinados
-         * @param {string} [nombre] Texto a buscar en el nombre del cliente
-         * @param {string} [correo] Texto a buscar en el correo electrónico
+         * @param {string} [query] Texto a buscar en el nombre o correo del cliente
          * @param {number} [page] Número de página (inicia en 0)
          * @param {number} [size] Cantidad de elementos por página
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async obtenerClientesFiltrados(nombre?: string, correo?: string, page?: number, size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PagedResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.obtenerClientesFiltrados(nombre, correo, page, size, options);
+        async obtenerClientesFiltrados(query?: string, page?: number, size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PagedResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.obtenerClientesFiltrados(query, page, size, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ClientesApi.obtenerClientesFiltrados']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -428,15 +422,14 @@ export const ClientesApiFactory = function (configuration?: Configuration, baseP
         /**
          * Obtiene una lista paginada de clientes aplicando filtros por nombre y/o correo electrónico
          * @summary Buscar clientes con filtros combinados
-         * @param {string} [nombre] Texto a buscar en el nombre del cliente
-         * @param {string} [correo] Texto a buscar en el correo electrónico
+         * @param {string} [query] Texto a buscar en el nombre o correo del cliente
          * @param {number} [page] Número de página (inicia en 0)
          * @param {number} [size] Cantidad de elementos por página
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        obtenerClientesFiltrados(nombre?: string, correo?: string, page?: number, size?: number, options?: RawAxiosRequestConfig): AxiosPromise<PagedResponse> {
-            return localVarFp.obtenerClientesFiltrados(nombre, correo, page, size, options).then((request) => request(axios, basePath));
+        obtenerClientesFiltrados(query?: string, page?: number, size?: number, options?: RawAxiosRequestConfig): AxiosPromise<PagedResponse> {
+            return localVarFp.obtenerClientesFiltrados(query, page, size, options).then((request) => request(axios, basePath));
         },
         /**
          * Obtiene una lista paginada de clientes cuyo correo electrónico contenga el texto especificado
@@ -484,15 +477,14 @@ export class ClientesApi extends BaseAPI {
     /**
      * Obtiene una lista paginada de clientes aplicando filtros por nombre y/o correo electrónico
      * @summary Buscar clientes con filtros combinados
-     * @param {string} [nombre] Texto a buscar en el nombre del cliente
-     * @param {string} [correo] Texto a buscar en el correo electrónico
+     * @param {string} [query] Texto a buscar en el nombre o correo del cliente
      * @param {number} [page] Número de página (inicia en 0)
      * @param {number} [size] Cantidad de elementos por página
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public obtenerClientesFiltrados(nombre?: string, correo?: string, page?: number, size?: number, options?: RawAxiosRequestConfig) {
-        return ClientesApiFp(this.configuration).obtenerClientesFiltrados(nombre, correo, page, size, options).then((request) => request(this.axios, this.basePath));
+    public obtenerClientesFiltrados(query?: string, page?: number, size?: number, options?: RawAxiosRequestConfig) {
+        return ClientesApiFp(this.configuration).obtenerClientesFiltrados(query, page, size, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

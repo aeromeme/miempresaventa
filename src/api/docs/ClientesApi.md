@@ -59,8 +59,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**400** | Parámetros de paginación inválidos |  -  |
 |**200** | Lista de clientes obtenida exitosamente |  -  |
+|**400** | Parámetros de paginación inválidos |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -80,14 +80,12 @@ import {
 const configuration = new Configuration();
 const apiInstance = new ClientesApi(configuration);
 
-let nombre: string; //Texto a buscar en el nombre del cliente (optional) (default to undefined)
-let correo: string; //Texto a buscar en el correo electrónico (optional) (default to undefined)
+let query: string; //Texto a buscar en el nombre o correo del cliente (optional) (default to undefined)
 let page: number; //Número de página (inicia en 0) (optional) (default to 0)
 let size: number; //Cantidad de elementos por página (optional) (default to 10)
 
 const { status, data } = await apiInstance.obtenerClientesFiltrados(
-    nombre,
-    correo,
+    query,
     page,
     size
 );
@@ -97,8 +95,7 @@ const { status, data } = await apiInstance.obtenerClientesFiltrados(
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **nombre** | [**string**] | Texto a buscar en el nombre del cliente | (optional) defaults to undefined|
-| **correo** | [**string**] | Texto a buscar en el correo electrónico | (optional) defaults to undefined|
+| **query** | [**string**] | Texto a buscar en el nombre o correo del cliente | (optional) defaults to undefined|
 | **page** | [**number**] | Número de página (inicia en 0) | (optional) defaults to 0|
 | **size** | [**number**] | Cantidad de elementos por página | (optional) defaults to 10|
 
@@ -120,8 +117,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**400** | Parámetros inválidos o al menos un filtro es requerido |  -  |
 |**200** | Lista de clientes con filtros aplicados obtenida exitosamente |  -  |
+|**400** | Parámetros inválidos o al menos un filtro es requerido |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -178,8 +175,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**200** | Lista de clientes filtrada por correo obtenida exitosamente |  -  |
 |**400** | Parámetros inválidos o filtro de correo requerido |  -  |
+|**200** | Lista de clientes filtrada por correo obtenida exitosamente |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
