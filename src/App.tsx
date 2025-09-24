@@ -1,16 +1,16 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Layout from "./components/Layout";
 import Dashboard from "./pages/Dashboard";
-import ProductosPage from "./pages/ProductosPage";
-import ClientesPage from "./pages/ClientesPage";
-import ComingSoonPage from "./components/ComingSoonPage";
+import ProductosPage from "./features/productos/pages/ProductosPage";
+import ClientesPage from "./features/clientes/pages/ClientesPage";
 import "./App.css";
+import DashboardLayout from "./layouts/DashboardLayout";
+import ComingSoonPage from "./components/ComingSoonPage";
 
 const App: React.FC = () => {
   return (
-    <Layout>
-      <Routes>
+    <Routes>
+      <Route element={<DashboardLayout />}>
         <Route path="/" element={<Dashboard />} />
         <Route path="/productos" element={<ProductosPage />} />
         <Route path="/clientes" element={<ClientesPage />} />
@@ -30,8 +30,8 @@ const App: React.FC = () => {
             </div>
           }
         />
-      </Routes>
-    </Layout>
+      </Route>
+    </Routes>
   );
 };
 

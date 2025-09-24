@@ -3,7 +3,11 @@ import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { InputNumber } from "primereact/inputnumber";
-import type { ProductoDto, CreateProductoDto, UpdateProductoDto } from "../api";
+import type {
+  ProductoDto,
+  CreateProductoDto,
+  UpdateProductoDto,
+} from "../../../api";
 
 interface ProductFormProps {
   visible: boolean;

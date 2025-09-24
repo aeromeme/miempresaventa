@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { ClientesApi, Configuration } from "../api";
+import { ClientesApi, Configuration } from "../../../api";
 import { Toast } from "primereact/toast";
 import { ConfirmDialog } from "primereact/confirmdialog";
-import ClientesTable from "../components/ClientesTable";
 import { useRef } from "react";
-import type { Cliente } from "../api/models";
+import type { Cliente } from "../../../api/models";
+import ClientesTable from "../components/ClientesTable";
 
 const configuration = new Configuration();
 const clientesApi = new ClientesApi(configuration);

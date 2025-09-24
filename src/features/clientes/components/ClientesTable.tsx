@@ -3,7 +3,7 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Card } from "primereact/card";
 import { InputText } from "primereact/inputtext";
-import type { Cliente } from "../api/models";
+import type { Cliente } from "../../../api/models";
 
 interface ClientesTableProps {
   clientes?: Cliente[];

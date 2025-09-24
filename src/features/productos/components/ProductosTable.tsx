@@ -7,7 +7,7 @@ import { Tag } from "primereact/tag";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { FilterMatchMode } from "primereact/api";
-import type { ProductoDto } from "../api";
+import type { ProductoDto } from "../../../api";
 
 interface ProductosTableProps {
   productos?: ProductoDto[];

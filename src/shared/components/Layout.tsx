@@ -101,17 +101,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </div>
         }
       >
-        <div className="p-3">
-          <Menu model={menuItems} className="w-full border-none" />
-        </div>
-
-        {/* Footer del sidebar */}
-        <div className="absolute bottom-0 left-0 right-0 p-3 border-top-1 surface-border bg-white">
-          <div className="text-center text-sm text-600">
-            <p className="m-0">Versión 1.0.0</p>
-            <p className="m-0 mt-1">© 2025 Mi Venta</p>
-          </div>
-        </div>
+        <Menu model={menuItems} className="w-full border-none" />
       </Sidebar>
 
       {/* Contenido principal */}
