@@ -96,6 +96,14 @@ export interface PagedResponse {
     'empty'?: boolean;
     'numberOfElements'?: number;
 }
+export interface ProblemDetail {
+    'type'?: string;
+    'title'?: string;
+    'status'?: number;
+    'detail'?: string;
+    'instance'?: string;
+    'properties'?: { [key: string]: object; };
+}
 /**
  * Datos de un producto
  */
@@ -522,7 +530,7 @@ export class ClientesApi extends BaseAPI {
 export const ProductosApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * Actualiza un producto existente. NOTA: La moneda NO se puede cambiar.
+         * Actualiza un producto existente
          * @summary Actualizar producto
          * @param {string} id ID único del producto
          * @param {UpdateProductoDto} updateProductoDto 
@@ -772,7 +780,7 @@ export const ProductosApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = ProductosApiAxiosParamCreator(configuration)
     return {
         /**
-         * Actualiza un producto existente. NOTA: La moneda NO se puede cambiar.
+         * Actualiza un producto existente
          * @summary Actualizar producto
          * @param {string} id ID único del producto
          * @param {UpdateProductoDto} updateProductoDto 
@@ -818,7 +826,7 @@ export const ProductosApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async eliminar(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async eliminar(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.eliminar(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ProductosApi.eliminar']?.[localVarOperationServerIndex]?.url;
@@ -871,7 +879,7 @@ export const ProductosApiFactory = function (configuration?: Configuration, base
     const localVarFp = ProductosApiFp(configuration)
     return {
         /**
-         * Actualiza un producto existente. NOTA: La moneda NO se puede cambiar.
+         * Actualiza un producto existente
          * @summary Actualizar producto
          * @param {string} id ID único del producto
          * @param {UpdateProductoDto} updateProductoDto 
@@ -908,7 +916,7 @@ export const ProductosApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        eliminar(id: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        eliminar(id: string, options?: RawAxiosRequestConfig): AxiosPromise<object> {
             return localVarFp.eliminar(id, options).then((request) => request(axios, basePath));
         },
         /**
@@ -947,7 +955,7 @@ export const ProductosApiFactory = function (configuration?: Configuration, base
  */
 export class ProductosApi extends BaseAPI {
     /**
-     * Actualiza un producto existente. NOTA: La moneda NO se puede cambiar.
+     * Actualiza un producto existente
      * @summary Actualizar producto
      * @param {string} id ID único del producto
      * @param {UpdateProductoDto} updateProductoDto 

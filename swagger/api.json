@@ -1,1 +1,643 @@
-{"openapi":"3.0.1","info":{"title":"OpenAPI definition","version":"v0"},"servers":[{"url":"http://localhost:8080","description":"Generated server url"}],"tags":[{"name":"Productos","description":"API para gestión de productos"},{"name":"Clientes","description":"API para gestión de clientes"}],"paths":{"/api/productos/{id}":{"get":{"tags":["Productos"],"summary":"Obtener producto por ID","description":"Busca y retorna un producto específico por su identificador único","operationId":"obtenerPorId","parameters":[{"name":"id","in":"path","description":"ID único del producto","required":true,"schema":{"type":"string"}}],"responses":{"404":{"description":"Producto no encontrado","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ProductoDto"}}}},"200":{"description":"Producto encontrado exitosamente","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ProductoDto"}}}}}},"put":{"tags":["Productos"],"summary":"Actualizar producto","description":"Actualiza un producto existente. NOTA: La moneda NO se puede cambiar.","operationId":"actualizar","parameters":[{"name":"id","in":"path","description":"ID único del producto","required":true,"schema":{"type":"string"}}],"requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/UpdateProductoDto"}}},"required":true},"responses":{"200":{"description":"Producto actualizado exitosamente","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ProductoDto"}}}},"404":{"description":"Producto no encontrado","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ProductoDto"}}}},"400":{"description":"Datos de entrada inválidos","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ProductoDto"}}}}}},"delete":{"tags":["Productos"],"summary":"Eliminar producto","description":"Elimina un producto del sistema","operationId":"eliminar","parameters":[{"name":"id","in":"path","description":"ID único del producto","required":true,"schema":{"type":"string"}}],"responses":{"404":{"description":"Producto no encontrado"},"204":{"description":"Producto eliminado exitosamente"}}}},"/api/productos":{"get":{"tags":["Productos"],"summary":"Listar todos los productos","description":"Obtiene una lista de todos los productos disponibles","operationId":"listarTodos","responses":{"200":{"description":"Lista de productos obtenida exitosamente","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/ProductoDto"}}}}}}},"post":{"tags":["Productos"],"summary":"Crear nuevo producto","description":"Crea un nuevo producto en el sistema","operationId":"crear","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/CreateProductoDto"}}},"required":true},"responses":{"201":{"description":"Producto creado exitosamente","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ProductoDto"}}}},"400":{"description":"Datos de entrada inválidos","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ProductoDto"}}}}}}},"/api/v1/clientes":{"get":{"tags":["Clientes"],"summary":"Obtener clientes paginados","description":"Obtiene una lista paginada de todos los clientes registrados en el sistema","operationId":"obtenerClientes","parameters":[{"name":"page","in":"query","description":"Número de página (inicia en 0)","required":false,"schema":{"type":"integer","format":"int32","default":0},"example":0},{"name":"size","in":"query","description":"Cantidad de elementos por página","required":false,"schema":{"type":"integer","format":"int32","default":10},"example":10}],"responses":{"200":{"description":"Lista de clientes obtenida exitosamente","content":{"application/json":{"schema":{"$ref":"#/components/schemas/PagedResponse"}}}},"400":{"description":"Parámetros de paginación inválidos","content":{"application/json":{}}}}}},"/api/v1/clientes/buscar":{"get":{"tags":["Clientes"],"summary":"Buscar clientes con filtros combinados","description":"Obtiene una lista paginada de clientes aplicando filtros por nombre y/o correo electrónico","operationId":"obtenerClientesFiltrados","parameters":[{"name":"nombre","in":"query","description":"Texto a buscar en el nombre del cliente","required":false,"schema":{"type":"string"},"example":"Juan"},{"name":"correo","in":"query","description":"Texto a buscar en el correo electrónico","required":false,"schema":{"type":"string"},"example":"gmail.com"},{"name":"page","in":"query","description":"Número de página (inicia en 0)","required":false,"schema":{"type":"integer","format":"int32","default":0},"example":0},{"name":"size","in":"query","description":"Cantidad de elementos por página","required":false,"schema":{"type":"integer","format":"int32","default":10},"example":10}],"responses":{"400":{"description":"Parámetros inválidos o al menos un filtro es requerido","content":{"application/json":{}}},"200":{"description":"Lista de clientes con filtros aplicados obtenida exitosamente","content":{"application/json":{"schema":{"$ref":"#/components/schemas/PagedResponse"}}}}}}},"/api/v1/clientes/buscar-por-nombre":{"get":{"tags":["Clientes"],"summary":"Buscar clientes por nombre","description":"Obtiene una lista paginada de clientes cuyo nombre contenga el texto especificado","operationId":"obtenerClientesPorNombre","parameters":[{"name":"nombre","in":"query","description":"Texto a buscar en el nombre del cliente","required":true,"schema":{"type":"string"},"example":"Juan"},{"name":"page","in":"query","description":"Número de página (inicia en 0)","required":false,"schema":{"type":"integer","format":"int32","default":0},"example":0},{"name":"size","in":"query","description":"Cantidad de elementos por página","required":false,"schema":{"type":"integer","format":"int32","default":10},"example":10}],"responses":{"400":{"description":"Parámetros inválidos o filtro de nombre requerido","content":{"application/json":{}}},"200":{"description":"Lista de clientes filtrada obtenida exitosamente","content":{"application/json":{"schema":{"$ref":"#/components/schemas/PagedResponse"}}}}}}},"/api/v1/clientes/buscar-por-correo":{"get":{"tags":["Clientes"],"summary":"Buscar clientes por correo electrónico","description":"Obtiene una lista paginada de clientes cuyo correo electrónico contenga el texto especificado","operationId":"obtenerClientesPorCorreo","parameters":[{"name":"correo","in":"query","description":"Texto a buscar en el correo electrónico","required":true,"schema":{"type":"string"},"example":"gmail.com"},{"name":"page","in":"query","description":"Número de página (inicia en 0)","required":false,"schema":{"type":"integer","format":"int32","default":0},"example":0},{"name":"size","in":"query","description":"Cantidad de elementos por página","required":false,"schema":{"type":"integer","format":"int32","default":10},"example":10}],"responses":{"400":{"description":"Parámetros inválidos o filtro de correo requerido","content":{"application/json":{}}},"200":{"description":"Lista de clientes filtrada por correo obtenida exitosamente","content":{"application/json":{"schema":{"$ref":"#/components/schemas/PagedResponse"}}}}}}},"/api/productos/config/monedas":{"get":{"tags":["Productos"],"summary":"Obtener configuración de monedas","description":"Obtiene la moneda por defecto y las monedas soportadas","operationId":"obtenerConfiguracionMonedas","responses":{"200":{"description":"Configuración obtenida exitosamente","content":{"*/*":{"schema":{"$ref":"#/components/schemas/MonedaConfigDto"}}}}}}},"/api/productos/buscar":{"get":{"tags":["Productos"],"summary":"Buscar productos por nombre","description":"Busca productos que contengan el texto especificado en el nombre","operationId":"buscarPorNombre","parameters":[{"name":"nombre","in":"query","description":"Texto a buscar en el nombre del producto","required":true,"schema":{"type":"string"}}],"responses":{"200":{"description":"Búsqueda realizada exitosamente","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/ProductoDto"}}}}}}}}},"components":{"schemas":{"UpdateProductoDto":{"type":"object","properties":{"nombre":{"maxLength":200,"minLength":2,"type":"string","description":"Nuevo nombre del producto","example":"Laptop Dell Inspiron 15"},"precio":{"minimum":0.01,"exclusiveMinimum":false,"type":"number","description":"Nuevo precio del producto","example":1199.99},"stock":{"minimum":0,"type":"integer","description":"Nueva cantidad en stock","format":"int32","example":20}},"description":"Datos para actualizar un producto existente. La moneda no se puede cambiar."},"ProductoDto":{"type":"object","properties":{"id":{"type":"string","description":"Identificador único del producto","example":"123e4567-e89b-12d3-a456-426614174000"},"nombre":{"type":"string","description":"Nombre del producto","example":"Laptop Dell Inspiron"},"precio":{"type":"number","description":"Precio del producto","example":1250.5},"moneda":{"type":"string","description":"Moneda del precio","example":"USD"},"stock":{"type":"integer","description":"Cantidad en stock","format":"int32","example":10}},"description":"Datos de un producto"},"CreateProductoDto":{"required":["nombre","precio","stock"],"type":"object","properties":{"nombre":{"maxLength":200,"minLength":2,"type":"string","description":"Nombre del producto","example":"Laptop Dell Inspiron"},"precio":{"minimum":0.01,"exclusiveMinimum":false,"type":"number","description":"Precio del producto","example":1250.5},"stock":{"minimum":0,"type":"integer","description":"Cantidad inicial en stock","format":"int32","example":10}},"description":"Datos para crear un nuevo producto"},"PagedResponse":{"type":"object","properties":{"content":{"type":"array","description":"Lista de elementos de la página actual","items":{"type":"object","description":"Lista de elementos de la página actual"}},"page":{"type":"integer","description":"Número de página actual (inicia en 0)","format":"int32","example":0},"size":{"type":"integer","description":"Cantidad de elementos por página","format":"int32","example":10},"totalElements":{"type":"integer","description":"Total de elementos en toda la colección","format":"int64","example":100},"totalPages":{"type":"integer","description":"Total de páginas disponibles","format":"int32","example":10},"first":{"type":"boolean","description":"Indica si es la primera página","example":true},"last":{"type":"boolean","description":"Indica si es la última página","example":false},"hasNext":{"type":"boolean","description":"Indica si hay página siguiente","example":true},"hasPrevious":{"type":"boolean","description":"Indica si hay página anterior","example":false},"empty":{"type":"boolean"},"numberOfElements":{"type":"integer","format":"int32"}},"description":"Respuesta paginada genérica que contiene datos y metadatos de paginación"},"MonedaConfigDto":{"type":"object","properties":{"monedaPorDefecto":{"type":"string","description":"Código de la moneda por defecto","example":"USD"},"monedasSoportadas":{"type":"array","description":"Lista de códigos de monedas soportadas","items":{"type":"string","description":"Lista de códigos de monedas soportadas"}}},"description":"Configuración de monedas del sistema"}}}}
+{
+  "openapi": "3.0.1",
+  "info": { "title": "OpenAPI definition", "version": "v0" },
+  "servers": [
+    { "url": "http://localhost:8080", "description": "Generated server url" }
+  ],
+  "tags": [
+    { "name": "Productos", "description": "API para gestión de productos" },
+    { "name": "Clientes", "description": "API para gestión de clientes" }
+  ],
+  "paths": {
+    "/api/productos/{id}": {
+      "get": {
+        "tags": ["Productos"],
+        "summary": "Obtener producto por ID",
+        "description": "Busca y retorna un producto específico por su identificador único",
+        "operationId": "obtenerPorId",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID único del producto",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Producto encontrado exitosamente",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ProductoDto" }
+              }
+            }
+          },
+          "404": {
+            "description": "Producto no encontrado",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Productos"],
+        "summary": "Actualizar producto",
+        "description": "Actualiza un producto existente",
+        "operationId": "actualizar",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID único del producto",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateProductoDto" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Producto actualizado exitosamente",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ProductoDto" }
+              }
+            }
+          },
+          "404": {
+            "description": "Producto no encontrado",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos de entrada inválidos",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Productos"],
+        "summary": "Eliminar producto",
+        "description": "Elimina un producto del sistema",
+        "operationId": "eliminar",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID único del producto",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Producto no encontrado",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
+              }
+            }
+          },
+          "204": {
+            "description": "Producto eliminado exitosamente",
+            "content": { "*/*": { "schema": { "type": "object" } } }
+          }
+        }
+      }
+    },
+    "/api/productos": {
+      "get": {
+        "tags": ["Productos"],
+        "summary": "Listar todos los productos",
+        "description": "Obtiene una lista de todos los productos disponibles",
+        "operationId": "listarTodos",
+        "responses": {
+          "200": {
+            "description": "Lista de productos obtenida exitosamente",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/ProductoDto" }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno al obtener los productos",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Productos"],
+        "summary": "Crear nuevo producto",
+        "description": "Crea un nuevo producto en el sistema",
+        "operationId": "crear",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateProductoDto" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Producto creado exitosamente",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ProductoDto" }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos de entrada inválidos",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/clientes": {
+      "get": {
+        "tags": ["Clientes"],
+        "summary": "Obtener clientes paginados",
+        "description": "Obtiene una lista paginada de todos los clientes registrados en el sistema",
+        "operationId": "obtenerClientes",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Número de página (inicia en 0)",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 0 },
+            "example": 0
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Cantidad de elementos por página",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 10 },
+            "example": 10
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Parámetros de paginación inválidos",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
+              }
+            }
+          },
+          "200": {
+            "description": "Lista de clientes obtenida exitosamente",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PagedResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/clientes/buscar": {
+      "get": {
+        "tags": ["Clientes"],
+        "summary": "Buscar clientes con filtros combinados",
+        "description": "Obtiene una lista paginada de clientes aplicando filtros por nombre y/o correo electrónico",
+        "operationId": "obtenerClientesFiltrados",
+        "parameters": [
+          {
+            "name": "nombre",
+            "in": "query",
+            "description": "Texto a buscar en el nombre del cliente",
+            "required": false,
+            "schema": { "type": "string" },
+            "example": "Juan"
+          },
+          {
+            "name": "correo",
+            "in": "query",
+            "description": "Texto a buscar en el correo electrónico",
+            "required": false,
+            "schema": { "type": "string" },
+            "example": "gmail.com"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Número de página (inicia en 0)",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 0 },
+            "example": 0
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Cantidad de elementos por página",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 10 },
+            "example": 10
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Parámetros inválidos o al menos un filtro es requerido",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
+              }
+            }
+          },
+          "200": {
+            "description": "Lista de clientes con filtros aplicados obtenida exitosamente",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PagedResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/clientes/buscar-por-nombre": {
+      "get": {
+        "tags": ["Clientes"],
+        "summary": "Buscar clientes por nombre",
+        "description": "Obtiene una lista paginada de clientes cuyo nombre contenga el texto especificado",
+        "operationId": "obtenerClientesPorNombre",
+        "parameters": [
+          {
+            "name": "nombre",
+            "in": "query",
+            "description": "Texto a buscar en el nombre del cliente",
+            "required": true,
+            "schema": { "type": "string" },
+            "example": "Juan"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Número de página (inicia en 0)",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 0 },
+            "example": 0
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Cantidad de elementos por página",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 10 },
+            "example": 10
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de clientes filtrada obtenida exitosamente",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PagedResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Parámetros inválidos o filtro de nombre requerido",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/clientes/buscar-por-correo": {
+      "get": {
+        "tags": ["Clientes"],
+        "summary": "Buscar clientes por correo electrónico",
+        "description": "Obtiene una lista paginada de clientes cuyo correo electrónico contenga el texto especificado",
+        "operationId": "obtenerClientesPorCorreo",
+        "parameters": [
+          {
+            "name": "correo",
+            "in": "query",
+            "description": "Texto a buscar en el correo electrónico",
+            "required": true,
+            "schema": { "type": "string" },
+            "example": "gmail.com"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Número de página (inicia en 0)",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 0 },
+            "example": 0
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Cantidad de elementos por página",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 10 },
+            "example": 10
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de clientes filtrada por correo obtenida exitosamente",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PagedResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Parámetros inválidos o filtro de correo requerido",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/productos/config/monedas": {
+      "get": {
+        "tags": ["Productos"],
+        "summary": "Obtener configuración de monedas",
+        "description": "Obtiene la moneda por defecto y las monedas soportadas",
+        "operationId": "obtenerConfiguracionMonedas",
+        "responses": {
+          "200": {
+            "description": "Configuración obtenida exitosamente",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/MonedaConfigDto" }
+              }
+            }
+          },
+          "500": {
+            "description": "Error al obtener la configuración",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/productos/buscar": {
+      "get": {
+        "tags": ["Productos"],
+        "summary": "Buscar productos por nombre",
+        "description": "Busca productos que contengan el texto especificado en el nombre",
+        "operationId": "buscarPorNombre",
+        "parameters": [
+          {
+            "name": "nombre",
+            "in": "query",
+            "description": "Texto a buscar en el nombre del producto",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Búsqueda realizada exitosamente",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/ProductoDto" }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno al realizar la búsqueda",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "UpdateProductoDto": {
+        "type": "object",
+        "properties": {
+          "nombre": {
+            "maxLength": 200,
+            "minLength": 2,
+            "type": "string",
+            "description": "Nuevo nombre del producto",
+            "example": "Laptop Dell Inspiron 15"
+          },
+          "precio": {
+            "minimum": 0.01,
+            "exclusiveMinimum": false,
+            "type": "number",
+            "description": "Nuevo precio del producto",
+            "example": 1199.99
+          },
+          "stock": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "Nueva cantidad en stock",
+            "format": "int32",
+            "example": 20
+          }
+        },
+        "description": "Datos para actualizar un producto existente. La moneda no se puede cambiar."
+      },
+      "ProductoDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Identificador único del producto",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "nombre": {
+            "type": "string",
+            "description": "Nombre del producto",
+            "example": "Laptop Dell Inspiron"
+          },
+          "precio": {
+            "type": "number",
+            "description": "Precio del producto",
+            "example": 1250.5
+          },
+          "moneda": {
+            "type": "string",
+            "description": "Moneda del precio",
+            "example": "USD"
+          },
+          "stock": {
+            "type": "integer",
+            "description": "Cantidad en stock",
+            "format": "int32",
+            "example": 10
+          }
+        },
+        "description": "Datos de un producto"
+      },
+      "ProblemDetail": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string", "format": "uri" },
+          "title": { "type": "string" },
+          "status": { "type": "integer", "format": "int32" },
+          "detail": { "type": "string" },
+          "instance": { "type": "string", "format": "uri" },
+          "properties": {
+            "type": "object",
+            "additionalProperties": { "type": "object" }
+          }
+        }
+      },
+      "CreateProductoDto": {
+        "required": ["nombre", "precio", "stock"],
+        "type": "object",
+        "properties": {
+          "nombre": {
+            "maxLength": 200,
+            "minLength": 2,
+            "type": "string",
+            "description": "Nombre del producto",
+            "example": "Laptop Dell Inspiron"
+          },
+          "precio": {
+            "minimum": 0.01,
+            "exclusiveMinimum": false,
+            "type": "number",
+            "description": "Precio del producto",
+            "example": 1250.5
+          },
+          "stock": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "Cantidad inicial en stock",
+            "format": "int32",
+            "example": 10
+          }
+        },
+        "description": "Datos para crear un nuevo producto"
+      },
+      "PagedResponse": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "description": "Lista de elementos de la página actual",
+            "items": {
+              "type": "object",
+              "description": "Lista de elementos de la página actual"
+            }
+          },
+          "page": {
+            "type": "integer",
+            "description": "Número de página actual (inicia en 0)",
+            "format": "int32",
+            "example": 0
+          },
+          "size": {
+            "type": "integer",
+            "description": "Cantidad de elementos por página",
+            "format": "int32",
+            "example": 10
+          },
+          "totalElements": {
+            "type": "integer",
+            "description": "Total de elementos en toda la colección",
+            "format": "int64",
+            "example": 100
+          },
+          "totalPages": {
+            "type": "integer",
+            "description": "Total de páginas disponibles",
+            "format": "int32",
+            "example": 10
+          },
+          "first": {
+            "type": "boolean",
+            "description": "Indica si es la primera página",
+            "example": true
+          },
+          "last": {
+            "type": "boolean",
+            "description": "Indica si es la última página",
+            "example": false
+          },
+          "hasNext": {
+            "type": "boolean",
+            "description": "Indica si hay página siguiente",
+            "example": true
+          },
+          "hasPrevious": {
+            "type": "boolean",
+            "description": "Indica si hay página anterior",
+            "example": false
+          },
+          "empty": { "type": "boolean" },
+          "numberOfElements": { "type": "integer", "format": "int32" }
+        },
+        "description": "Respuesta paginada genérica que contiene datos y metadatos de paginación"
+      },
+      "MonedaConfigDto": {
+        "type": "object",
+        "properties": {
+          "monedaPorDefecto": {
+            "type": "string",
+            "description": "Código de la moneda por defecto",
+            "example": "USD"
+          },
+          "monedasSoportadas": {
+            "type": "array",
+            "description": "Lista de códigos de monedas soportadas",
+            "items": {
+              "type": "string",
+              "description": "Lista de códigos de monedas soportadas"
+            }
+          }
+        },
+        "description": "Configuración de monedas del sistema"
+      }
+    }
+  }
+}

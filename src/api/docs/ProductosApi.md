@@ -15,7 +15,7 @@ All URIs are relative to *http://localhost:8080*
 # **actualizar**
 > ProductoDto actualizar(updateProductoDto)
 
-Actualiza un producto existente. NOTA: La moneda NO se puede cambiar.
+Actualiza un producto existente
 
 ### Example
 
@@ -117,6 +117,7 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 |**200** | Búsqueda realizada exitosamente |  -  |
+|**500** | Error interno al realizar la búsqueda |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -174,7 +175,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **eliminar**
-> eliminar()
+> object eliminar()
 
 Elimina un producto del sistema
 
@@ -205,7 +206,7 @@ const { status, data } = await apiInstance.eliminar(
 
 ### Return type
 
-void (empty response body)
+**object**
 
 ### Authorization
 
@@ -214,7 +215,7 @@ No authorization required
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: */*
 
 
 ### HTTP response details
@@ -266,6 +267,7 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 |**200** | Lista de productos obtenida exitosamente |  -  |
+|**500** | Error interno al obtener los productos |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -310,6 +312,7 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 |**200** | Configuración obtenida exitosamente |  -  |
+|**500** | Error al obtener la configuración |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -360,8 +363,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**404** | Producto no encontrado |  -  |
 |**200** | Producto encontrado exitosamente |  -  |
+|**404** | Producto no encontrado |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

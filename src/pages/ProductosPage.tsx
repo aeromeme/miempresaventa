@@ -1,14 +1,25 @@
 import React, { useState, useEffect } from "react";
 import ProductosTable from "../components/ProductosTable";
+import ProductForm from "../components/ProductForm";
 import { Button } from "primereact/button";
 import { Message } from "primereact/message";
+import { Toast } from "primereact/toast";
+import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import { ProductosApi } from "../api";
-import type { ProductoDto } from "../api";
+import type { ProductoDto, CreateProductoDto, UpdateProductoDto } from "../api";
+import { useRef } from "react";
 
 const ProductosPage: React.FC = () => {
   const [productos, setProductos] = useState<ProductoDto[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [formVisible, setFormVisible] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<
+    ProductoDto | undefined
+  >();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const toast = useRef<Toast>(null);
 
   useEffect(() => {
     const productosApi = new ProductosApi();
@@ -90,7 +101,10 @@ const ProductosPage: React.FC = () => {
             label="Nuevo Producto"
             icon="pi pi-plus"
             className="p-button-primary"
-            onClick={() => console.log("Crear nuevo producto")}
+            onClick={() => {
+              setSelectedProduct(undefined);
+              setFormVisible(true);
+            }}
           />
         </div>
 
@@ -107,7 +121,132 @@ const ProductosPage: React.FC = () => {
         )}
 
         {/* Tabla de productos */}
-        <ProductosTable productos={productos} />
+        <ProductosTable
+          productos={productos}
+          onEdit={(product) => {
+            setSelectedProduct(product);
+            setFormVisible(true);
+          }}
+          onDelete={(product) => {
+            confirmDialog({
+              message: `¿Está seguro de eliminar el producto "${product.nombre}"?`,
+              header: "Confirmar eliminación",
+              icon: "pi pi-exclamation-triangle",
+              acceptClassName: "p-button-danger",
+              acceptLabel: "Sí, eliminar",
+              rejectLabel: "Cancelar",
+              async accept() {
+                try {
+                  setIsDeleting(true);
+                  const api = new ProductosApi();
+                  await api.eliminar(product.id!);
+
+                  // Refresh the list
+                  const response = await api.listarTodos();
+                  if (!response?.data) {
+                    throw new Error(
+                      "Error al actualizar la lista de productos"
+                    );
+                  }
+                  setProductos(response.data);
+
+                  toast.current?.show({
+                    severity: "success",
+                    summary: "Éxito",
+                    detail: "Producto eliminado correctamente",
+                  });
+                } catch (err: any) {
+                  const errorMessage =
+                    err.response?.data?.detail ||
+                    err.message ||
+                    "Ha ocurrido un error al eliminar el producto";
+
+                  toast.current?.show({
+                    severity: "error",
+                    summary: "Error al eliminar",
+                    detail: errorMessage,
+                    life: 5000,
+                  });
+                } finally {
+                  setIsDeleting(false);
+                }
+              },
+            });
+          }}
+          isDeleting={isDeleting}
+        />
+
+        <ProductForm
+          visible={formVisible}
+          onHide={() => setFormVisible(false)}
+          product={selectedProduct}
+          isSubmitting={isSubmitting}
+          onSubmit={async (data) => {
+            try {
+              setIsSubmitting(true);
+              const api = new ProductosApi();
+
+              if (selectedProduct) {
+                // Edit mode
+                const updateResponse = await api.actualizar(
+                  selectedProduct.id!,
+                  data as UpdateProductoDto
+                );
+
+                if (!updateResponse?.data) {
+                  throw new Error("No se recibió respuesta del servidor");
+                }
+
+                toast.current?.show({
+                  severity: "success",
+                  summary: "Éxito",
+                  detail: "Producto actualizado correctamente",
+                });
+              } else {
+                // Create mode
+                const createResponse = await api.crear(
+                  data as CreateProductoDto
+                );
+
+                if (!createResponse?.data) {
+                  throw new Error("No se recibió respuesta del servidor");
+                }
+
+                toast.current?.show({
+                  severity: "success",
+                  summary: "Éxito",
+                  detail: "Producto creado correctamente",
+                });
+              }
+
+              // Refresh the products list
+              const listResponse = await api.listarTodos();
+              if (!listResponse?.data) {
+                throw new Error("Error al actualizar la lista de productos");
+              }
+              setProductos(listResponse.data);
+              setFormVisible(false);
+            } catch (err: any) {
+              const operation = selectedProduct ? "actualizar" : "crear";
+              const errorMessage =
+                err.response?.data?.message ||
+                err.message ||
+                `Ha ocurrido un error al ${operation} el producto`;
+
+              toast.current?.show({
+                severity: "error",
+                summary: `Error al ${operation}`,
+                detail: errorMessage,
+                life: 5000,
+              });
+            } finally {
+              setIsSubmitting(false);
+            }
+          }}
+        />
+
+        <Toast ref={toast} />
+        <ConfirmDialog />
       </div>
     </div>
   );

@@ -11,9 +11,17 @@ import type { ProductoDto } from "../api";
 
 interface ProductosTableProps {
   productos?: ProductoDto[];
+  onEdit?: (product: ProductoDto) => void;
+  onDelete?: (product: ProductoDto) => void;
+  isDeleting?: boolean;
 }
 
-const ProductosTable: React.FC<ProductosTableProps> = ({ productos = [] }) => {
+const ProductosTable: React.FC<ProductosTableProps> = ({
+  productos = [],
+  onEdit,
+  onDelete,
+  isDeleting = false,
+}) => {
   const [globalFilterValue, setGlobalFilterValue] = useState<string>("");
   const [filters, setFilters] = useState<DataTableFilterMeta>({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -87,25 +95,20 @@ const ProductosTable: React.FC<ProductosTableProps> = ({ productos = [] }) => {
     return (
       <div className="flex gap-2">
         <Button
-          icon="pi pi-eye"
-          className="p-button-rounded p-button-info p-button-sm"
-          tooltip="Ver detalles"
-          tooltipOptions={{ position: "top" }}
-          onClick={() => console.log("Ver producto:", rowData)}
-        />
-        <Button
           icon="pi pi-pencil"
-          className="p-button-rounded p-button-success p-button-sm"
-          tooltip="Editar"
+          className="p-button-rounded p-button-primary p-button-sm"
+          tooltip="Editar producto"
           tooltipOptions={{ position: "top" }}
-          onClick={() => console.log("Editar producto:", rowData)}
+          onClick={() => onEdit?.(rowData)}
+          disabled={isDeleting}
         />
         <Button
           icon="pi pi-trash"
           className="p-button-rounded p-button-danger p-button-sm"
-          tooltip="Eliminar"
+          tooltip="Eliminar producto"
           tooltipOptions={{ position: "top" }}
-          onClick={() => console.log("Eliminar producto:", rowData)}
+          onClick={() => onDelete?.(rowData)}
+          disabled={isDeleting}
         />
       </div>
     );

@@ -1,6 +1,5 @@
 .gitignore
 .npmignore
-.openapi-generator-ignore
 api.ts
 base.ts
 common.ts
@@ -9,6 +8,7 @@ docs/ClientesApi.md
 docs/CreateProductoDto.md
 docs/MonedaConfigDto.md
 docs/PagedResponse.md
+docs/ProblemDetail.md
 docs/ProductoDto.md
 docs/ProductosApi.md
 docs/UpdateProductoDto.md
