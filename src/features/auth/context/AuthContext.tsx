@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, useCallback } from "react";
 import type {
   AuthenticationResponse,
-  AuthenticationRequest,
 } from "../../../api";
 
 interface User {

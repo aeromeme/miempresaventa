@@ -4,7 +4,6 @@ import { Sidebar } from "primereact/sidebar";
 import { Button } from "primereact/button";
 import { Menu } from "primereact/menu";
 import { useNavigate, useLocation } from "react-router-dom";
-import type { MenuItem } from "primereact/menuitem";
 import { useAuth } from "../../features/auth/context/AuthContext";
 import type { MenuItemWithRoles } from "../utils/menuUtils";
 import { filterMenuItemsByRoles } from "../utils/menuUtils";

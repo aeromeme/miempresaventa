@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { Configuration } from "../configuration";
 import { requestInterceptor, responseInterceptor } from "../interceptors/axios";
 import { useAuth } from "../../features/auth/context/AuthContext";
@@ -8,6 +8,7 @@ export const useAxiosConfig = () => {
 
   const config = useMemo(() => {
     return new Configuration({
+      basePath: import.meta.env.VITE_API_URL,
       baseOptions: {
         headers: {},
         interceptors: [

@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  frontend:
+    build: .
+    container_name: frontend
+    ports:
+      - "80:80"
+    networks:
+      - ventas-network
+
+networks:
+  ventas-network:
+    name: ventas-network
