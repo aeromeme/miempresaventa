@@ -1,16 +1,19 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { ClientesApi, Configuration } from "../../../api";
+import { ClientesApi } from "../../../api";
+import { axiosConfig } from "../../../api/config/axiosConfig";
 import { Toast } from "primereact/toast";
+import { Message } from "primereact/message";
 import { ConfirmDialog } from "primereact/confirmdialog";
 import { useRef } from "react";
 import type { Cliente } from "../../../api/models";
 import ClientesTable from "../components/ClientesTable";
+import { handleApiError } from "../../../utils/errorHandler";
 
-const configuration = new Configuration();
-const clientesApi = new ClientesApi(configuration);
+const clientesApi = new ClientesApi(axiosConfig);
 
 const ClientesPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [clientes, setClientes] = useState<Cliente[]>([]);
   const [pagination, setPagination] = useState({
     page: 0,
@@ -29,6 +32,7 @@ const ClientesPage: React.FC = () => {
     async (page: number = 0, size: number = 10, search: string = "") => {
       try {
         setIsLoading(true);
+        setError(null);
         let response;
         if (search && search.length >= 3) {
           response = await clientesApi.obtenerClientesFiltrados(
@@ -41,25 +45,28 @@ const ClientesPage: React.FC = () => {
         }
 
         if (response.data?.content) {
-          setClientes(response.data.content as Cliente[]);
-          setPagination({
-            page,
-            size,
-            totalElements: response.data.totalElements || 0,
-            totalPages: response.data.totalPages || 0,
-            first: response.data.first || false,
-            last: response.data.last || false,
-            hasNext: response.data.hasNext || false,
-            hasPrevious: response.data.hasPrevious || false,
-          });
+          if (response.data.content.length > 0) {
+            setClientes(response.data.content as Cliente[]);
+            setError(null);
+            setPagination({
+              page,
+              size,
+              totalElements: response.data.totalElements || 0,
+              totalPages: response.data.totalPages || 0,
+              first: response.data.first || false,
+              last: response.data.last || false,
+              hasNext: response.data.hasNext || false,
+              hasPrevious: response.data.hasPrevious || false,
+            });
+          } else {
+            setError("No se encontraron clientes");
+            setClientes([]);
+          }
         }
       } catch (error) {
-        console.error("Error al cargar clientes:", error);
-        toast.current?.show({
-          severity: "error",
-          summary: "Error",
-          detail: "No se pudieron cargar los clientes",
-          life: 3000,
+        handleApiError(error, {
+          toast,
+          defaultMessage: "No se pudieron cargar los clientes",
         });
       } finally {
         setIsLoading(false);
@@ -95,9 +102,10 @@ const ClientesPage: React.FC = () => {
       <Toast ref={toast} />
       <ConfirmDialog />
       <div className="flex flex-column gap-4">
+        {error && <Message severity="error" text={error} className="w-full" />}
         <div className="text-500 text-sm">
           El filtro de búsqueda se aplicará cuando ingreses al menos 3
-          caracteres.
+          caracteres. La paginacion se hace en el servidor.
         </div>
         <ClientesTable
           clientes={clientes}

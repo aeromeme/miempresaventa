@@ -1,21 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import type { ReactNode } from "react";
 import { Sidebar } from "primereact/sidebar";
 import { Button } from "primereact/button";
 import { Menu } from "primereact/menu";
 import { useNavigate, useLocation } from "react-router-dom";
 import type { MenuItem } from "primereact/menuitem";
+import { useAuth } from "../../features/auth/context/AuthContext";
+import type { MenuItemWithRoles } from "../utils/menuUtils";
+import { filterMenuItemsByRoles } from "../utils/menuUtils";
 
 interface LayoutProps {
   children: ReactNode;
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
+  const { user } = useAuth();
   const [sidebarVisible, setSidebarVisible] = useState<boolean>(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { logout } = useAuth();
 
-  const menuItems: MenuItem[] = [
+  const allMenuItems: MenuItemWithRoles[] = [
     {
       label: "Dashboard",
       icon: "pi pi-home",
@@ -24,6 +29,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         setSidebarVisible(false);
       },
       className: location.pathname === "/" ? "p-menuitem-active" : "",
+      roles: [], // Sin roles = visible para todos los usuarios autenticados
     },
     {
       label: "Productos",
@@ -33,6 +39,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         setSidebarVisible(false);
       },
       className: location.pathname === "/productos" ? "p-menuitem-active" : "",
+      roles: ["ROLE_OPERADOR", "ROLE_ADMIN"],
     },
     {
       label: "Clientes",
@@ -42,6 +49,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         setSidebarVisible(false);
       },
       className: location.pathname === "/clientes" ? "p-menuitem-active" : "",
+      roles: ["ROLE_ADMIN"],
     },
     {
       separator: true,
@@ -55,13 +63,19 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       },
       className:
         location.pathname === "/configuracion" ? "p-menuitem-active" : "",
+      roles: ["ROLE_ADMIN"],
     },
   ];
 
+  const visibleMenuItems = useMemo(
+    () => filterMenuItemsByRoles(allMenuItems, user?.roles || []),
+    [user?.roles]
+  );
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="w-screen min-h-screen bg-gray-50 flex flex-column">
       {/* Header fijo */}
-      <div className="bg-white shadow-1 p-3 flex align-items-center justify-content-between border-bottom-1 surface-border">
+      <div className="w-screen bg-white shadow-1 p-3 flex align-items-center justify-content-between border-bottom-1 surface-border">
         <div className="flex align-items-center gap-3">
           {/* Botón hamburguesa */}
           <Button
@@ -78,12 +92,18 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <Button
             icon="pi pi-bell"
             className="p-button-rounded p-button-text"
-            tooltip="Notificaciones"
           />
           <Button
             icon="pi pi-user"
             className="p-button-rounded p-button-text"
-            tooltip="Perfil"
+          />
+          <Button
+            icon="pi pi-sign-out"
+            className="p-button-rounded p-button-text p-button-danger"
+            onClick={() => {
+              logout();
+              navigate("/login");
+            }}
           />
         </div>
       </div>
@@ -101,11 +121,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </div>
         }
       >
-        <Menu model={menuItems} className="w-full border-none" />
+        <Menu model={visibleMenuItems} className="w-full border-none" />
       </Sidebar>
 
       {/* Contenido principal */}
-      <div className="p-4">{children}</div>
+      <div className="w-screen flex-grow p-4">{children}</div>
     </div>
   );
 };

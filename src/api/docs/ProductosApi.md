@@ -52,7 +52,7 @@ const { status, data } = await apiInstance.actualizar(
 
 ### Authorization
 
-No authorization required
+[bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
@@ -63,9 +63,9 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+|**200** | Producto actualizado exitosamente |  -  |
 |**400** | Datos de entrada inválidos |  -  |
 |**404** | Producto no encontrado |  -  |
-|**200** | Producto actualizado exitosamente |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -105,7 +105,7 @@ const { status, data } = await apiInstance.buscarPorNombre(
 
 ### Authorization
 
-No authorization required
+[bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
@@ -158,7 +158,7 @@ const { status, data } = await apiInstance.crear(
 
 ### Authorization
 
-No authorization required
+[bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
@@ -169,8 +169,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**400** | Datos de entrada inválidos |  -  |
 |**201** | Producto creado exitosamente |  -  |
+|**400** | Datos de entrada inválidos |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -210,7 +210,7 @@ const { status, data } = await apiInstance.eliminar(
 
 ### Authorization
 
-No authorization required
+[bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
@@ -255,7 +255,7 @@ This endpoint does not have any parameters.
 
 ### Authorization
 
-No authorization required
+[bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
@@ -266,8 +266,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**500** | Error interno al obtener los productos |  -  |
 |**200** | Lista de productos obtenida exitosamente |  -  |
+|**500** | Error interno al obtener los productos |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -300,7 +300,7 @@ This endpoint does not have any parameters.
 
 ### Authorization
 
-No authorization required
+[bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
@@ -352,7 +352,7 @@ const { status, data } = await apiInstance.obtenerPorId(
 
 ### Authorization
 
-No authorization required
+[bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
@@ -363,8 +363,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**404** | Producto no encontrado |  -  |
 |**200** | Producto encontrado exitosamente |  -  |
+|**404** | Producto no encontrado |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

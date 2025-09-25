@@ -1,10 +1,18 @@
 {
   "openapi": "3.0.1",
-  "info": { "title": "OpenAPI definition", "version": "v0" },
-  "servers": [
-    { "url": "http://localhost:8080", "description": "Generated server url" }
-  ],
+  "info": {
+    "title": "API de Ventas",
+    "description": "API para gestión de ventas",
+    "contact": { "name": "Soporte", "email": "soporte@miempresa.com" },
+    "version": "1.0"
+  },
+  "servers": [{ "url": "http://localhost:8080", "description": "Local ENV" }],
+  "security": [{ "bearerAuth": [] }],
   "tags": [
+    {
+      "name": "Autenticación",
+      "description": "Endpoints para autenticación de usuarios"
+    },
     { "name": "Productos", "description": "API para gestión de productos" },
     { "name": "Clientes", "description": "API para gestión de clientes" }
   ],
@@ -25,19 +33,19 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Producto no encontrado",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
-              }
-            }
-          },
           "200": {
             "description": "Producto encontrado exitosamente",
             "content": {
               "*/*": {
                 "schema": { "$ref": "#/components/schemas/ProductoDto" }
+              }
+            }
+          },
+          "404": {
+            "description": "Producto no encontrado",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
               }
             }
           }
@@ -66,6 +74,14 @@
           "required": true
         },
         "responses": {
+          "200": {
+            "description": "Producto actualizado exitosamente",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ProductoDto" }
+              }
+            }
+          },
           "400": {
             "description": "Datos de entrada inválidos",
             "content": {
@@ -79,14 +95,6 @@
             "content": {
               "*/*": {
                 "schema": { "$ref": "#/components/schemas/ProblemDetail" }
-              }
-            }
-          },
-          "200": {
-            "description": "Producto actualizado exitosamente",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/ProductoDto" }
               }
             }
           }
@@ -122,6 +130,35 @@
         }
       }
     },
+    "/api/v1/auth/login": {
+      "post": {
+        "tags": ["Autenticación"],
+        "summary": "Autenticar usuario",
+        "description": "Autentica un usuario y retorna un token JWT",
+        "operationId": "authenticate",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AuthenticationRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Autenticación exitosa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticationResponse"
+                }
+              }
+            }
+          },
+          "401": { "description": "Credenciales inválidas" }
+        }
+      }
+    },
     "/api/productos": {
       "get": {
         "tags": ["Productos"],
@@ -129,14 +166,6 @@
         "description": "Obtiene una lista de todos los productos disponibles",
         "operationId": "listarTodos",
         "responses": {
-          "500": {
-            "description": "Error interno al obtener los productos",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
-              }
-            }
-          },
           "200": {
             "description": "Lista de productos obtenida exitosamente",
             "content": {
@@ -145,6 +174,14 @@
                   "type": "array",
                   "items": { "$ref": "#/components/schemas/ProductoDto" }
                 }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno al obtener los productos",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
               }
             }
           }
@@ -164,19 +201,19 @@
           "required": true
         },
         "responses": {
-          "400": {
-            "description": "Datos de entrada inválidos",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
-              }
-            }
-          },
           "201": {
             "description": "Producto creado exitosamente",
             "content": {
               "*/*": {
                 "schema": { "$ref": "#/components/schemas/ProductoDto" }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos de entrada inválidos",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
               }
             }
           }
@@ -208,19 +245,19 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Lista de clientes obtenida exitosamente",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/PagedResponse" }
-              }
-            }
-          },
           "400": {
             "description": "Parámetros de paginación inválidos",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/ProblemDetail" }
+              }
+            }
+          },
+          "200": {
+            "description": "Lista de clientes obtenida exitosamente",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PagedResponse" }
               }
             }
           }
@@ -312,19 +349,19 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Lista de clientes filtrada obtenida exitosamente",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/PagedResponse" }
-              }
-            }
-          },
           "400": {
             "description": "Parámetros inválidos o filtro de nombre requerido",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/ProblemDetail" }
+              }
+            }
+          },
+          "200": {
+            "description": "Lista de clientes filtrada obtenida exitosamente",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PagedResponse" }
               }
             }
           }
@@ -364,19 +401,19 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "Parámetros inválidos o filtro de correo requerido",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
-              }
-            }
-          },
           "200": {
             "description": "Lista de clientes filtrada por correo obtenida exitosamente",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/PagedResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Parámetros inválidos o filtro de correo requerido",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
               }
             }
           }
@@ -477,20 +514,6 @@
         },
         "description": "Datos para actualizar un producto existente. La moneda no se puede cambiar."
       },
-      "ProblemDetail": {
-        "type": "object",
-        "properties": {
-          "type": { "type": "string", "format": "uri" },
-          "title": { "type": "string" },
-          "status": { "type": "integer", "format": "int32" },
-          "detail": { "type": "string" },
-          "instance": { "type": "string", "format": "uri" },
-          "properties": {
-            "type": "object",
-            "additionalProperties": { "type": "object" }
-          }
-        }
-      },
       "ProductoDto": {
         "type": "object",
         "properties": {
@@ -522,6 +545,36 @@
           }
         },
         "description": "Datos de un producto"
+      },
+      "ProblemDetail": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string", "format": "uri" },
+          "title": { "type": "string" },
+          "status": { "type": "integer", "format": "int32" },
+          "detail": { "type": "string" },
+          "instance": { "type": "string", "format": "uri" },
+          "properties": {
+            "type": "object",
+            "additionalProperties": { "type": "object" }
+          }
+        }
+      },
+      "AuthenticationRequest": {
+        "required": ["email", "password"],
+        "type": "object",
+        "properties": {
+          "email": { "type": "string" },
+          "password": {
+            "maxLength": 2147483647,
+            "minLength": 6,
+            "type": "string"
+          }
+        }
+      },
+      "AuthenticationResponse": {
+        "type": "object",
+        "properties": { "token": { "type": "string" } }
       },
       "CreateProductoDto": {
         "required": ["nombre", "precio", "stock"],
@@ -629,6 +682,15 @@
           }
         },
         "description": "Configuración de monedas del sistema"
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "description": "JWT auth description",
+        "in": "header",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   }

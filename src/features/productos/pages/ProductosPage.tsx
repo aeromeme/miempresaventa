@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Button } from "primereact/button";
 import { Message } from "primereact/message";
 import { Toast } from "primereact/toast";
@@ -9,9 +9,12 @@ import type {
   CreateProductoDto,
   UpdateProductoDto,
 } from "../../../api";
-import { useRef } from "react";
+import { axiosConfig } from "../../../api/config/axiosConfig";
 import ProductosTable from "../components/ProductosTable";
 import ProductForm from "../components/ProductForm";
+import { handleApiError } from "../../../utils/errorHandler";
+
+const productosApi = new ProductosApi(axiosConfig);
 
 const ProductosPage: React.FC = () => {
   const [productos, setProductos] = useState<ProductoDto[]>([]);
@@ -26,42 +29,30 @@ const ProductosPage: React.FC = () => {
   const toast = useRef<Toast>(null);
 
   useEffect(() => {
-    const productosApi = new ProductosApi();
     let isSubscribed = true;
 
     const loadProductos = async () => {
       try {
         setLoading(true);
         setError(null);
-
-        console.log("Iniciando carga de productos..."); // Debug log
         const response = await productosApi.listarTodos();
-        console.log("API Response:", response); // Debug log
 
         if (isSubscribed) {
-          if (response) {
-            // Debug logs to understand the response structure
-            console.log("Productos Data:", response); // Debug log
-            console.log("Tipo de response:", typeof response); // Debug log
-            console.log("Contenido de data:", response.data); // Debug log
-
-            // Use response.data which contains the actual array of products
-            const productosArray = response.data ?? [];
-
-            console.log("Array final de productos:", productosArray); // Debug log
-            setProductos(productosArray);
-            console.log("Estado actualizado con productos:", productosArray); // Debug log
+          if (response?.data?.length > 0) {
+            setProductos(response.data);
+            setError(null);
           } else {
-            console.log("No response from API"); // Debug log
-            setError("Error al cargar los productos");
+            setError("No se encontraron productos");
             setProductos([]);
           }
         }
-      } catch (error) {
+      } catch (err: any) {
         if (isSubscribed) {
-          console.error("Error cargando productos:", error);
-          setError("Error al cargar los productos");
           setProductos([]);
+          handleApiError(err, {
+            toast,
+            defaultMessage: "Error al cargar los productos",
+          });
         }
       } finally {
         if (isSubscribed) {
@@ -82,8 +73,7 @@ const ProductosPage: React.FC = () => {
   ) => {
     try {
       setIsSubmitting(true);
-      const productosApi = new ProductosApi();
-      const response = await productosApi.crear(data as CreateProductoDto);
+      await productosApi.crear(data as CreateProductoDto);
 
       // Refresh the products list
       const updatedResponse = await productosApi.listarTodos();
@@ -101,17 +91,10 @@ const ProductosPage: React.FC = () => {
 
       setFormVisible(false);
     } catch (err: any) {
-      console.error("Error creando producto:", err);
-      const errorMessage =
-        err.response?.data?.detail ||
-        err.message ||
-        "Ha ocurrido un error al crear el producto";
-
-      toast.current?.show({
-        severity: "error",
-        summary: "Error al crear",
-        detail: errorMessage,
-        life: 5000,
+      handleApiError(err, {
+        toast,
+        defaultMessage: "Ha ocurrido un error al crear el producto",
+        isValidationError: true,
       });
     } finally {
       setIsSubmitting(false);
@@ -125,7 +108,6 @@ const ProductosPage: React.FC = () => {
 
     try {
       setIsSubmitting(true);
-      const productosApi = new ProductosApi();
       await productosApi.actualizar(
         selectedProduct.id,
         data as UpdateProductoDto
@@ -148,17 +130,10 @@ const ProductosPage: React.FC = () => {
       setFormVisible(false);
       setSelectedProduct(undefined);
     } catch (err: any) {
-      console.error("Error actualizando producto:", err);
-      const errorMessage =
-        err.response?.data?.detail ||
-        err.message ||
-        "Ha ocurrido un error al actualizar el producto";
-
-      toast.current?.show({
-        severity: "error",
-        summary: "Error al actualizar",
-        detail: errorMessage,
-        life: 5000,
+      handleApiError(err, {
+        toast,
+        defaultMessage: "Ha ocurrido un error al actualizar el producto",
+        isValidationError: true,
       });
     } finally {
       setIsSubmitting(false);
@@ -173,11 +148,9 @@ const ProductosPage: React.FC = () => {
       acceptClassName: "p-button-danger",
       acceptLabel: "Sí, eliminar",
       rejectLabel: "Cancelar",
-      async accept() {
+      accept: async () => {
         try {
           setIsDeleting(true);
-          const productosApi = new ProductosApi();
-
           if (!product.id) {
             throw new Error("ID del producto no válido");
           }
@@ -198,17 +171,9 @@ const ProductosPage: React.FC = () => {
             life: 3000,
           });
         } catch (err: any) {
-          console.error("Error eliminando producto:", err);
-          const errorMessage =
-            err.response?.data?.detail ||
-            err.message ||
-            "Ha ocurrido un error al eliminar el producto";
-
-          toast.current?.show({
-            severity: "error",
-            summary: "Error al eliminar",
-            detail: errorMessage,
-            life: 5000,
+          handleApiError(err, {
+            toast,
+            defaultMessage: "Ha ocurrido un error al eliminar el producto",
           });
         } finally {
           setIsDeleting(false);
