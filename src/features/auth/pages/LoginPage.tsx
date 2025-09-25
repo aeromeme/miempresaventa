@@ -3,20 +3,22 @@ import { Card } from "primereact/card";
 import { Toast } from "primereact/toast";
 import { useNavigate } from "react-router-dom";
 import type { AuthenticationRequest } from "../../../api";
-import { AutenticacinApi, Configuration } from "../../../api";
+import { AutenticacinApi } from "../../../api";
 import LoginForm from "../components/LoginForm";
 import { useAuth } from "../context/AuthContext";
+import { useAxiosConfig } from "../../../api/hooks/useAxiosConfig";
 
 const LoginPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const toast = useRef<Toast>(null);
   const navigate = useNavigate();
   const { login } = useAuth();
+  const axiosConfig = useAxiosConfig();
 
   const handleLogin = async (credentials: AuthenticationRequest) => {
     try {
       setIsLoading(true);
-      const authApi = new AutenticacinApi();
+      const authApi = new AutenticacinApi(axiosConfig);
 
       const response = await authApi.authenticate(credentials);
 

@@ -9,14 +9,15 @@ import type {
   CreateProductoDto,
   UpdateProductoDto,
 } from "../../../api";
-import { axiosConfig } from "../../../api/config/axiosConfig";
 import ProductosTable from "../components/ProductosTable";
 import ProductForm from "../components/ProductForm";
 import { handleApiError } from "../../../utils/errorHandler";
-
-const productosApi = new ProductosApi(axiosConfig);
+import { useAxiosConfig } from "../../../api/hooks/useAxiosConfig";
 
 const ProductosPage: React.FC = () => {
+  const axiosConfig = useAxiosConfig();
+  const productosApi = new ProductosApi(axiosConfig);
+
   const [productos, setProductos] = useState<ProductoDto[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);

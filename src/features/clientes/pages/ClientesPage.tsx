@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { ClientesApi } from "../../../api";
-import { axiosConfig } from "../../../api/config/axiosConfig";
 import { Toast } from "primereact/toast";
 import { Message } from "primereact/message";
 import { ConfirmDialog } from "primereact/confirmdialog";
@@ -8,10 +7,12 @@ import { useRef } from "react";
 import type { Cliente } from "../../../api/models";
 import ClientesTable from "../components/ClientesTable";
 import { handleApiError } from "../../../utils/errorHandler";
-
-const clientesApi = new ClientesApi(axiosConfig);
+import { useAxiosConfig } from "../../../api/hooks/useAxiosConfig";
 
 const ClientesPage: React.FC = () => {
+  const axiosConfig = useAxiosConfig();
+  const clientesApi = new ClientesApi(axiosConfig);
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [clientes, setClientes] = useState<Cliente[]>([]);
@@ -75,26 +76,35 @@ const ClientesPage: React.FC = () => {
     []
   );
 
+  // Cargar clientes cuando cambian los parámetros de paginación o búsqueda
   useEffect(() => {
     loadClientes(pagination.page, pagination.size, searchTerm);
   }, [loadClientes, pagination.page, pagination.size, searchTerm]);
 
   const handleSearch = (term: string) => {
-    if (term && term.length < 3) {
-      loadClientes(0, pagination.size, "");
-      return;
-    }
-
     setSearchTerm(term);
-    if (pagination.page !== 0) {
-      setPagination((prev) => ({ ...prev, page: 0 }));
-    } else {
-      loadClientes(0, pagination.size, term);
-    }
+    // Resetear a la primera página cuando se busca
+    setPagination((prev) => ({
+      ...prev,
+      page: 0,
+      first: true,
+      last: false,
+      hasNext: prev.totalElements > prev.size,
+      hasPrevious: false,
+    }));
   };
 
   const handlePageChange = (page: number, size: number) => {
-    setPagination((prev) => ({ ...prev, page, size }));
+    setPagination((prev) => ({
+      ...prev,
+      page,
+      size,
+      // Actualizar los campos de navegación basados en la nueva página
+      first: page === 0,
+      last: page === prev.totalPages - 1,
+      hasNext: page < prev.totalPages - 1,
+      hasPrevious: page > 0,
+    }));
   };
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Card } from "primereact/card";
@@ -30,6 +30,13 @@ const ClientesTable: React.FC<ClientesTableProps> = ({
   onPageChange,
 }) => {
   const [globalFilterValue, setGlobalFilterValue] = useState<string>("");
+
+  // Reiniciar el filtro cuando cambie la paginación externamente
+  useEffect(() => {
+    if (pagination) {
+      console.log("Pagination changed:", pagination);
+    }
+  }, [pagination]);
 
   const onGlobalFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -64,9 +71,17 @@ const ClientesTable: React.FC<ClientesTableProps> = ({
         value={clientes}
         paginator
         rows={pagination?.size || 10}
-        first={(pagination?.page || 0) * (pagination?.size || 10)}
+        first={pagination?.page ? pagination.page * pagination.size : 0}
         totalRecords={pagination?.totalElements}
-        onPage={(e) => onPageChange?.(e.page ?? 0, e.rows ?? 10)}
+        onPage={(e: any) => {
+          console.log("DataTable onPage:", e);
+          if (onPageChange) {
+            const newPage = Math.floor(e.first / e.rows);
+            console.log("Calculated new page:", newPage);
+            onPageChange(newPage, e.rows);
+          }
+        }}
+        lazy
         rowsPerPageOptions={[5, 10, 25, 50]}
         header={header}
         emptyMessage="No se encontraron clientes"
@@ -75,6 +90,13 @@ const ClientesTable: React.FC<ClientesTableProps> = ({
         showGridlines
         loading={loading}
       >
+        <Column
+          field="clienteId"
+          header="ID"
+          sortable
+          style={{ minWidth: "100px" }}
+          className="font-medium"
+        />
         <Column
           field="nombre"
           header="Nombre"
