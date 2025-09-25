@@ -233,8 +233,8 @@ const { status, data } = await apiInstance.obtenerClientesPorNombre(
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**400** | Parámetros inválidos o filtro de nombre requerido |  -  |
 |**200** | Lista de clientes filtrada obtenida exitosamente |  -  |
+|**400** | Parámetros inválidos o filtro de nombre requerido |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

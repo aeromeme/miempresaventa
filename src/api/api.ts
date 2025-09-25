@@ -30,6 +30,13 @@ export interface AuthenticationRequest {
 export interface AuthenticationResponse {
     'token'?: string;
 }
+export interface ClienteIngresosDTO {
+    'id'?: string;
+    'nombre'?: string;
+    'correo'?: string;
+    'totalVentas'?: number;
+    'totalIngresos'?: number;
+}
 /**
  * Datos para crear un nuevo producto
  */
@@ -46,6 +53,14 @@ export interface CreateProductoDto {
      * Cantidad inicial en stock
      */
     'stock': number;
+}
+export interface IngresosMensualesDTO {
+    'periodo'?: string;
+    'anio'?: number;
+    'mes'?: number;
+    'totalVentas'?: number;
+    'totalClientes'?: number;
+    'ingresoTotal'?: number;
 }
 /**
  * Configuración de monedas del sistema
@@ -135,6 +150,12 @@ export interface ProductoDto {
      * Cantidad en stock
      */
     'stock'?: number;
+}
+export interface TopProductoDTO {
+    'id'?: string;
+    'nombre'?: string;
+    'totalVendido'?: number;
+    'totalIngresos'?: number;
 }
 /**
  * Datos para actualizar un producto existente. La moneda no se puede cambiar.
@@ -641,6 +662,322 @@ export class ClientesApi extends BaseAPI {
      */
     public obtenerClientesPorNombre(nombre: string, page?: number, size?: number, options?: RawAxiosRequestConfig) {
         return ClientesApiFp(this.configuration).obtenerClientesPorNombre(nombre, page, size, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * DashboardVentasControllerApi - axios parameter creator
+ */
+export const DashboardVentasControllerApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @param {number} [limit] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        obtenerClientesTopIngresos: async (limit?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v1/dashboard/ventas/clientes/top-ingresos`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {number} [anio] 
+         * @param {number} [mes] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        obtenerIngresoPorMes: async (anio?: number, mes?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v1/dashboard/ventas/ingresos/por-mes`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            if (anio !== undefined) {
+                localVarQueryParameter['anio'] = anio;
+            }
+
+            if (mes !== undefined) {
+                localVarQueryParameter['mes'] = mes;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {number} anio 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        obtenerIngresosPorAnio: async (anio: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'anio' is not null or undefined
+            assertParamExists('obtenerIngresosPorAnio', 'anio', anio)
+            const localVarPath = `/api/v1/dashboard/ventas/ingresos/por-anio/{anio}`
+                .replace(`{${"anio"}}`, encodeURIComponent(String(anio)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {number} [limit] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        obtenerTopProductosVendidos: async (limit?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v1/dashboard/ventas/productos/top`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * DashboardVentasControllerApi - functional programming interface
+ */
+export const DashboardVentasControllerApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = DashboardVentasControllerApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @param {number} [limit] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async obtenerClientesTopIngresos(limit?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ClienteIngresosDTO>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.obtenerClientesTopIngresos(limit, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DashboardVentasControllerApi.obtenerClientesTopIngresos']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {number} [anio] 
+         * @param {number} [mes] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async obtenerIngresoPorMes(anio?: number, mes?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<IngresosMensualesDTO>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.obtenerIngresoPorMes(anio, mes, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DashboardVentasControllerApi.obtenerIngresoPorMes']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {number} anio 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async obtenerIngresosPorAnio(anio: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<IngresosMensualesDTO>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.obtenerIngresosPorAnio(anio, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DashboardVentasControllerApi.obtenerIngresosPorAnio']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {number} [limit] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async obtenerTopProductosVendidos(limit?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<TopProductoDTO>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.obtenerTopProductosVendidos(limit, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DashboardVentasControllerApi.obtenerTopProductosVendidos']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * DashboardVentasControllerApi - factory interface
+ */
+export const DashboardVentasControllerApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = DashboardVentasControllerApiFp(configuration)
+    return {
+        /**
+         * 
+         * @param {number} [limit] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        obtenerClientesTopIngresos(limit?: number, options?: RawAxiosRequestConfig): AxiosPromise<Array<ClienteIngresosDTO>> {
+            return localVarFp.obtenerClientesTopIngresos(limit, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {number} [anio] 
+         * @param {number} [mes] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        obtenerIngresoPorMes(anio?: number, mes?: number, options?: RawAxiosRequestConfig): AxiosPromise<IngresosMensualesDTO> {
+            return localVarFp.obtenerIngresoPorMes(anio, mes, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {number} anio 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        obtenerIngresosPorAnio(anio: number, options?: RawAxiosRequestConfig): AxiosPromise<Array<IngresosMensualesDTO>> {
+            return localVarFp.obtenerIngresosPorAnio(anio, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {number} [limit] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        obtenerTopProductosVendidos(limit?: number, options?: RawAxiosRequestConfig): AxiosPromise<Array<TopProductoDTO>> {
+            return localVarFp.obtenerTopProductosVendidos(limit, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * DashboardVentasControllerApi - object-oriented interface
+ */
+export class DashboardVentasControllerApi extends BaseAPI {
+    /**
+     * 
+     * @param {number} [limit] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public obtenerClientesTopIngresos(limit?: number, options?: RawAxiosRequestConfig) {
+        return DashboardVentasControllerApiFp(this.configuration).obtenerClientesTopIngresos(limit, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} [anio] 
+     * @param {number} [mes] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public obtenerIngresoPorMes(anio?: number, mes?: number, options?: RawAxiosRequestConfig) {
+        return DashboardVentasControllerApiFp(this.configuration).obtenerIngresoPorMes(anio, mes, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} anio 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public obtenerIngresosPorAnio(anio: number, options?: RawAxiosRequestConfig) {
+        return DashboardVentasControllerApiFp(this.configuration).obtenerIngresosPorAnio(anio, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} [limit] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public obtenerTopProductosVendidos(limit?: number, options?: RawAxiosRequestConfig) {
+        return DashboardVentasControllerApiFp(this.configuration).obtenerTopProductosVendidos(limit, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

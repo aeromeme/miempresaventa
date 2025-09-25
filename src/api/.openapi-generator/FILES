@@ -7,13 +7,17 @@ configuration.ts
 docs/AutenticacinApi.md
 docs/AuthenticationRequest.md
 docs/AuthenticationResponse.md
+docs/ClienteIngresosDTO.md
 docs/ClientesApi.md
 docs/CreateProductoDto.md
+docs/DashboardVentasControllerApi.md
+docs/IngresosMensualesDTO.md
 docs/MonedaConfigDto.md
 docs/PagedResponse.md
 docs/ProblemDetail.md
 docs/ProductoDto.md
 docs/ProductosApi.md
+docs/TopProductoDTO.md
 docs/UpdateProductoDto.md
 git_push.sh
 index.ts

@@ -33,19 +33,19 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Producto encontrado exitosamente",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/ProductoDto" }
-              }
-            }
-          },
           "404": {
             "description": "Producto no encontrado",
             "content": {
               "*/*": {
                 "schema": { "$ref": "#/components/schemas/ProblemDetail" }
+              }
+            }
+          },
+          "200": {
+            "description": "Producto encontrado exitosamente",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ProductoDto" }
               }
             }
           }
@@ -74,14 +74,6 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Producto actualizado exitosamente",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/ProductoDto" }
-              }
-            }
-          },
           "400": {
             "description": "Datos de entrada inválidos",
             "content": {
@@ -95,6 +87,14 @@
             "content": {
               "*/*": {
                 "schema": { "$ref": "#/components/schemas/ProblemDetail" }
+              }
+            }
+          },
+          "200": {
+            "description": "Producto actualizado exitosamente",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ProductoDto" }
               }
             }
           }
@@ -145,6 +145,7 @@
           "required": true
         },
         "responses": {
+          "401": { "description": "Credenciales inválidas" },
           "200": {
             "description": "Autenticación exitosa",
             "content": {
@@ -154,8 +155,7 @@
                 }
               }
             }
-          },
-          "401": { "description": "Credenciales inválidas" }
+          }
         }
       }
     },
@@ -201,6 +201,14 @@
           "required": true
         },
         "responses": {
+          "400": {
+            "description": "Datos de entrada inválidos",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
+              }
+            }
+          },
           "201": {
             "description": "Producto creado exitosamente",
             "content": {
@@ -208,12 +216,119 @@
                 "schema": { "$ref": "#/components/schemas/ProductoDto" }
               }
             }
-          },
-          "400": {
-            "description": "Datos de entrada inválidos",
+          }
+        }
+      }
+    },
+    "/api/v1/dashboard/ventas/productos/top": {
+      "get": {
+        "tags": ["dashboard-ventas-controller"],
+        "operationId": "obtenerTopProductosVendidos",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
             "content": {
               "*/*": {
-                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/TopProductoDTO" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/dashboard/ventas/ingresos/por-mes": {
+      "get": {
+        "tags": ["dashboard-ventas-controller"],
+        "operationId": "obtenerIngresoPorMes",
+        "parameters": [
+          {
+            "name": "anio",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32" }
+          },
+          {
+            "name": "mes",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/IngresosMensualesDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/dashboard/ventas/ingresos/por-anio/{anio}": {
+      "get": {
+        "tags": ["dashboard-ventas-controller"],
+        "operationId": "obtenerIngresosPorAnio",
+        "parameters": [
+          {
+            "name": "anio",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int32" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IngresosMensualesDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/dashboard/ventas/clientes/top-ingresos": {
+      "get": {
+        "tags": ["dashboard-ventas-controller"],
+        "operationId": "obtenerClientesTopIngresos",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/ClienteIngresosDTO" }
+                }
               }
             }
           }
@@ -349,19 +464,19 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "Parámetros inválidos o filtro de nombre requerido",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
-              }
-            }
-          },
           "200": {
             "description": "Lista de clientes filtrada obtenida exitosamente",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/PagedResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Parámetros inválidos o filtro de nombre requerido",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
               }
             }
           }
@@ -427,19 +542,19 @@
         "description": "Obtiene la moneda por defecto y las monedas soportadas",
         "operationId": "obtenerConfiguracionMonedas",
         "responses": {
-          "200": {
-            "description": "Configuración obtenida exitosamente",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/MonedaConfigDto" }
-              }
-            }
-          },
           "500": {
             "description": "Error al obtener la configuración",
             "content": {
               "*/*": {
                 "schema": { "$ref": "#/components/schemas/ProblemDetail" }
+              }
+            }
+          },
+          "200": {
+            "description": "Configuración obtenida exitosamente",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/MonedaConfigDto" }
               }
             }
           }
@@ -462,14 +577,6 @@
           }
         ],
         "responses": {
-          "500": {
-            "description": "Error interno al realizar la búsqueda",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
-              }
-            }
-          },
           "200": {
             "description": "Búsqueda realizada exitosamente",
             "content": {
@@ -478,6 +585,14 @@
                   "type": "array",
                   "items": { "$ref": "#/components/schemas/ProductoDto" }
                 }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno al realizar la búsqueda",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
               }
             }
           }
@@ -514,6 +629,20 @@
         },
         "description": "Datos para actualizar un producto existente. La moneda no se puede cambiar."
       },
+      "ProblemDetail": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string", "format": "uri" },
+          "title": { "type": "string" },
+          "status": { "type": "integer", "format": "int32" },
+          "detail": { "type": "string" },
+          "instance": { "type": "string", "format": "uri" },
+          "properties": {
+            "type": "object",
+            "additionalProperties": { "type": "object" }
+          }
+        }
+      },
       "ProductoDto": {
         "type": "object",
         "properties": {
@@ -545,20 +674,6 @@
           }
         },
         "description": "Datos de un producto"
-      },
-      "ProblemDetail": {
-        "type": "object",
-        "properties": {
-          "type": { "type": "string", "format": "uri" },
-          "title": { "type": "string" },
-          "status": { "type": "integer", "format": "int32" },
-          "detail": { "type": "string" },
-          "instance": { "type": "string", "format": "uri" },
-          "properties": {
-            "type": "object",
-            "additionalProperties": { "type": "object" }
-          }
-        }
       },
       "AuthenticationRequest": {
         "required": ["email", "password"],
@@ -603,6 +718,36 @@
           }
         },
         "description": "Datos para crear un nuevo producto"
+      },
+      "TopProductoDTO": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "nombre": { "type": "string" },
+          "totalVendido": { "type": "integer", "format": "int64" },
+          "totalIngresos": { "type": "number" }
+        }
+      },
+      "IngresosMensualesDTO": {
+        "type": "object",
+        "properties": {
+          "periodo": { "type": "string", "format": "date-time" },
+          "anio": { "type": "integer", "format": "int32" },
+          "mes": { "type": "integer", "format": "int32" },
+          "totalVentas": { "type": "integer", "format": "int64" },
+          "totalClientes": { "type": "integer", "format": "int64" },
+          "ingresoTotal": { "type": "number" }
+        }
+      },
+      "ClienteIngresosDTO": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "nombre": { "type": "string" },
+          "correo": { "type": "string" },
+          "totalVentas": { "type": "integer", "format": "int64" },
+          "totalIngresos": { "type": "number" }
+        }
       },
       "PagedResponse": {
         "type": "object",

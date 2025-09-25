@@ -49,15 +49,13 @@ const ClientesTable: React.FC<ClientesTableProps> = ({
       <div className="flex justify-content-between align-items-center">
         <h3 className="m-0">Lista de Clientes</h3>
         <div className="flex align-items-center gap-2">
-          <span className="p-input-icon-left">
-            <i className="pi pi-search" />
+    
             <InputText
               value={globalFilterValue}
               onChange={onGlobalFilterChange}
               placeholder="Buscar clientes..."
               className="p-inputtext-sm"
             />
-          </span>
         </div>
       </div>
     );

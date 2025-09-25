@@ -4,6 +4,7 @@ import { ProgressSpinner } from "primereact/progressspinner";
 import Dashboard from "./pages/Dashboard";
 import ProductosPage from "./features/productos/pages/ProductosPage";
 import ClientesPage from "./features/clientes/pages/ClientesPage";
+import DashboardVentas from "./features/ventas/pages/DashboardVentas";
 import DashboardLayout from "./layouts/DashboardLayout";
 import PublicLayout from "./layouts/PublicLayout";
 import LoginPage from "./features/auth/pages/LoginPage";
@@ -61,6 +62,15 @@ const App: React.FC = () => (
                   <RoleGuard
                     allowedRoles={["ROLE_ADMIN"]}
                     element={<ClientesPage />}
+                  />
+                }
+              />
+              <Route
+                path="/ventas/dashboard"
+                element={
+                  <RoleGuard
+                    allowedRoles={["ROLE_ADMIN"]}
+                    element={<DashboardVentas />}
                   />
                 }
               />
