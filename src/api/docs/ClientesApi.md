@@ -4,10 +4,10 @@ All URIs are relative to *http://localhost:8080*
 
 |Method | HTTP request | Description|
 |------------- | ------------- | -------------|
-|[**obtenerClientes**](#obtenerclientes) | **GET** /api/v1/clientes | Obtener clientes paginados|
-|[**obtenerClientesFiltrados**](#obtenerclientesfiltrados) | **GET** /api/v1/clientes/buscar | Buscar clientes con filtros combinados|
-|[**obtenerClientesPorCorreo**](#obtenerclientesporcorreo) | **GET** /api/v1/clientes/buscar-por-correo | Buscar clientes por correo electrónico|
-|[**obtenerClientesPorNombre**](#obtenerclientespornombre) | **GET** /api/v1/clientes/buscar-por-nombre | Buscar clientes por nombre|
+|[**obtenerClientes**](#obtenerclientes) | **GET** /api/clientes | Obtener clientes paginados|
+|[**obtenerClientesFiltrados**](#obtenerclientesfiltrados) | **GET** /api/clientes/buscar | Buscar clientes con filtros combinados|
+|[**obtenerClientesPorCorreo**](#obtenerclientesporcorreo) | **GET** /api/clientes/buscar-por-correo | Buscar clientes por correo electrónico|
+|[**obtenerClientesPorNombre**](#obtenerclientespornombre) | **GET** /api/clientes/buscar-por-nombre | Buscar clientes por nombre|
 
 # **obtenerClientes**
 > PagedResponse obtenerClientes()

@@ -62,6 +62,16 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       roles: ["ROLE_ADMIN"],
     },
     {
+      label: "Ventas",
+      icon: "pi pi-shopping-cart",
+      command: () => {
+        navigate("/ventas");
+        setSidebarVisible(false);
+      },
+      className: location.pathname === "/ventas" ? "p-menuitem-active" : "",
+      roles: ["ROLE_ADMIN"],
+    },
+    {
       separator: true,
     },
     {

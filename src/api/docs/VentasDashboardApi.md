@@ -1,4 +1,4 @@
-# DashboardVentasControllerApi
+# VentasDashboardApi
 
 All URIs are relative to *http://localhost:8080*
 
@@ -17,12 +17,12 @@ All URIs are relative to *http://localhost:8080*
 
 ```typescript
 import {
-    DashboardVentasControllerApi,
+    VentasDashboardApi,
     Configuration
 } from './api';
 
 const configuration = new Configuration();
-const apiInstance = new DashboardVentasControllerApi(configuration);
+const apiInstance = new VentasDashboardApi(configuration);
 
 let limit: number; // (optional) (default to undefined)
 
@@ -67,12 +67,12 @@ const { status, data } = await apiInstance.obtenerClientesTopIngresos(
 
 ```typescript
 import {
-    DashboardVentasControllerApi,
+    VentasDashboardApi,
     Configuration
 } from './api';
 
 const configuration = new Configuration();
-const apiInstance = new DashboardVentasControllerApi(configuration);
+const apiInstance = new VentasDashboardApi(configuration);
 
 let anio: number; // (optional) (default to undefined)
 let mes: number; // (optional) (default to undefined)
@@ -120,12 +120,12 @@ const { status, data } = await apiInstance.obtenerIngresoPorMes(
 
 ```typescript
 import {
-    DashboardVentasControllerApi,
+    VentasDashboardApi,
     Configuration
 } from './api';
 
 const configuration = new Configuration();
-const apiInstance = new DashboardVentasControllerApi(configuration);
+const apiInstance = new VentasDashboardApi(configuration);
 
 let anio: number; // (default to undefined)
 
@@ -170,12 +170,12 @@ const { status, data } = await apiInstance.obtenerIngresosPorAnio(
 
 ```typescript
 import {
-    DashboardVentasControllerApi,
+    VentasDashboardApi,
     Configuration
 } from './api';
 
 const configuration = new Configuration();
-const apiInstance = new DashboardVentasControllerApi(configuration);
+const apiInstance = new VentasDashboardApi(configuration);
 
 let limit: number; // (optional) (default to undefined)
 

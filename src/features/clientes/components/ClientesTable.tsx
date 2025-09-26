@@ -94,6 +94,7 @@ const ClientesTable: React.FC<ClientesTableProps> = ({
           sortable
           style={{ minWidth: "100px" }}
           className="font-medium"
+          hidden={true}
         />
         <Column
           field="nombre"

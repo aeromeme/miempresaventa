@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { DashboardVentasControllerApi } from "../../../api";
+import { VentasDashboardApi } from "../../../api";
 import type {
   TopProductoDTO,
   ClienteIngresosDTO,
@@ -15,7 +15,7 @@ import { useRef } from "react";
 
 const DashboardVentas: React.FC = () => {
   const axiosConfig = useAxiosConfig();
-  const dashboardApi = new DashboardVentasControllerApi(axiosConfig);
+  const dashboardApi = new VentasDashboardApi(axiosConfig);
   const toast = useRef<Toast>(null);
 
   const [loadingProductos, setLoadingProductos] = useState(true);

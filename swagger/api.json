@@ -9,14 +9,69 @@
   "servers": [{ "url": "http://localhost:8080", "description": "Local ENV" }],
   "security": [{ "bearerAuth": [] }],
   "tags": [
+    { "name": "Ventas", "description": "API para gestión de ventas" },
     {
       "name": "Autenticación",
       "description": "Endpoints para autenticación de usuarios"
     },
     { "name": "Productos", "description": "API para gestión de productos" },
-    { "name": "Clientes", "description": "API para gestión de clientes" }
+    { "name": "Clientes", "description": "API para gestión de clientes" },
+    {
+      "name": "VentasDashboard",
+      "description": "API para consultas del dashboard de ventas"
+    }
   ],
   "paths": {
+    "/api/ventas/{id}": {
+      "get": {
+        "tags": ["Ventas"],
+        "operationId": "getById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/VentaDTO" } }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Ventas"],
+        "operationId": "update",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateVentaDTO" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/VentaDTO" } }
+            }
+          }
+        }
+      }
+    },
     "/api/productos/{id}": {
       "get": {
         "tags": ["Productos"],
@@ -33,19 +88,19 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Producto no encontrado",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
-              }
-            }
-          },
           "200": {
             "description": "Producto encontrado exitosamente",
             "content": {
               "*/*": {
                 "schema": { "$ref": "#/components/schemas/ProductoDto" }
+              }
+            }
+          },
+          "404": {
+            "description": "Producto no encontrado",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
               }
             }
           }
@@ -125,6 +180,45 @@
               "*/*": {
                 "schema": { "$ref": "#/components/schemas/ProblemDetail" }
               }
+            }
+          }
+        }
+      }
+    },
+    "/api/ventas": {
+      "get": {
+        "tags": ["Ventas"],
+        "operationId": "getAll",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/VentaDTO" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Ventas"],
+        "operationId": "create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateVentaDTO" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/VentaDTO" } }
             }
           }
         }
@@ -220,9 +314,127 @@
         }
       }
     },
-    "/api/v1/dashboard/ventas/productos/top": {
+    "/api/ventas/estado/{estado}": {
       "get": {
-        "tags": ["dashboard-ventas-controller"],
+        "tags": ["Ventas"],
+        "operationId": "getByEstado",
+        "parameters": [
+          {
+            "name": "estado",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/VentaDTO" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ventas/cliente/{clienteId}": {
+      "get": {
+        "tags": ["Ventas"],
+        "operationId": "getByClienteId",
+        "parameters": [
+          {
+            "name": "clienteId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/VentaDTO" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/productos/config/monedas": {
+      "get": {
+        "tags": ["Productos"],
+        "summary": "Obtener configuración de monedas",
+        "description": "Obtiene la moneda por defecto y las monedas soportadas",
+        "operationId": "obtenerConfiguracionMonedas",
+        "responses": {
+          "500": {
+            "description": "Error al obtener la configuración",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
+              }
+            }
+          },
+          "200": {
+            "description": "Configuración obtenida exitosamente",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/MonedaConfigDto" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/productos/buscar": {
+      "get": {
+        "tags": ["Productos"],
+        "summary": "Buscar productos por nombre",
+        "description": "Busca productos que contengan el texto especificado en el nombre",
+        "operationId": "buscarPorNombre",
+        "parameters": [
+          {
+            "name": "nombre",
+            "in": "query",
+            "description": "Texto a buscar en el nombre del producto",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Error interno al realizar la búsqueda",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
+              }
+            }
+          },
+          "200": {
+            "description": "Búsqueda realizada exitosamente",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/ProductoDto" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/dashboard/ventas/productos/top": {
+      "get": {
+        "tags": ["VentasDashboard"],
         "operationId": "obtenerTopProductosVendidos",
         "parameters": [
           {
@@ -247,9 +459,9 @@
         }
       }
     },
-    "/api/v1/dashboard/ventas/ingresos/por-mes": {
+    "/api/dashboard/ventas/ingresos/por-mes": {
       "get": {
-        "tags": ["dashboard-ventas-controller"],
+        "tags": ["VentasDashboard"],
         "operationId": "obtenerIngresoPorMes",
         "parameters": [
           {
@@ -279,9 +491,9 @@
         }
       }
     },
-    "/api/v1/dashboard/ventas/ingresos/por-anio/{anio}": {
+    "/api/dashboard/ventas/ingresos/por-anio/{anio}": {
       "get": {
-        "tags": ["dashboard-ventas-controller"],
+        "tags": ["VentasDashboard"],
         "operationId": "obtenerIngresosPorAnio",
         "parameters": [
           {
@@ -308,9 +520,9 @@
         }
       }
     },
-    "/api/v1/dashboard/ventas/clientes/top-ingresos": {
+    "/api/dashboard/ventas/clientes/top-ingresos": {
       "get": {
-        "tags": ["dashboard-ventas-controller"],
+        "tags": ["VentasDashboard"],
         "operationId": "obtenerClientesTopIngresos",
         "parameters": [
           {
@@ -335,7 +547,7 @@
         }
       }
     },
-    "/api/v1/clientes": {
+    "/api/clientes": {
       "get": {
         "tags": ["Clientes"],
         "summary": "Obtener clientes paginados",
@@ -379,7 +591,7 @@
         }
       }
     },
-    "/api/v1/clientes/buscar": {
+    "/api/clientes/buscar": {
       "get": {
         "tags": ["Clientes"],
         "summary": "Buscar clientes con filtros combinados",
@@ -431,7 +643,7 @@
         }
       }
     },
-    "/api/v1/clientes/buscar-por-nombre": {
+    "/api/clientes/buscar-por-nombre": {
       "get": {
         "tags": ["Clientes"],
         "summary": "Buscar clientes por nombre",
@@ -483,7 +695,7 @@
         }
       }
     },
-    "/api/v1/clientes/buscar-por-correo": {
+    "/api/clientes/buscar-por-correo": {
       "get": {
         "tags": ["Clientes"],
         "summary": "Buscar clientes por correo electrónico",
@@ -534,74 +746,83 @@
           }
         }
       }
-    },
-    "/api/productos/config/monedas": {
-      "get": {
-        "tags": ["Productos"],
-        "summary": "Obtener configuración de monedas",
-        "description": "Obtiene la moneda por defecto y las monedas soportadas",
-        "operationId": "obtenerConfiguracionMonedas",
-        "responses": {
-          "500": {
-            "description": "Error al obtener la configuración",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
-              }
-            }
-          },
-          "200": {
-            "description": "Configuración obtenida exitosamente",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/MonedaConfigDto" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/productos/buscar": {
-      "get": {
-        "tags": ["Productos"],
-        "summary": "Buscar productos por nombre",
-        "description": "Busca productos que contengan el texto especificado en el nombre",
-        "operationId": "buscarPorNombre",
-        "parameters": [
-          {
-            "name": "nombre",
-            "in": "query",
-            "description": "Texto a buscar en el nombre del producto",
-            "required": true,
-            "schema": { "type": "string" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Búsqueda realizada exitosamente",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": { "$ref": "#/components/schemas/ProductoDto" }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Error interno al realizar la búsqueda",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
     "schemas": {
+      "UpdateLineaVentaDTO": {
+        "required": ["cantidad", "precioUnitario", "productoId"],
+        "type": "object",
+        "properties": {
+          "productoId": {
+            "type": "string",
+            "description": "ID del producto",
+            "example": "A123"
+          },
+          "cantidad": {
+            "minimum": 1,
+            "type": "integer",
+            "description": "Cantidad de productos",
+            "format": "int32",
+            "example": 2
+          },
+          "precioUnitario": {
+            "minimum": 0.01,
+            "exclusiveMinimum": false,
+            "type": "number",
+            "description": "Precio unitario del producto",
+            "example": 100.0
+          }
+        },
+        "description": "Datos para actualizar una línea de venta"
+      },
+      "UpdateVentaDTO": {
+        "required": ["clienteId", "id", "lineasVenta"],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID de la venta",
+            "example": "1"
+          },
+          "clienteId": {
+            "type": "string",
+            "description": "ID del cliente",
+            "example": "123"
+          },
+          "lineasVenta": {
+            "maxItems": 2147483647,
+            "minItems": 1,
+            "type": "array",
+            "description": "Lista de líneas de venta",
+            "items": { "$ref": "#/components/schemas/UpdateLineaVentaDTO" }
+          }
+        },
+        "description": "Datos para actualizar una venta"
+      },
+      "LineaVentaDTO": {
+        "type": "object",
+        "properties": {
+          "productoId": { "type": "string" },
+          "cantidad": { "type": "integer", "format": "int32" },
+          "precioUnitario": { "type": "number" },
+          "subtotal": { "type": "number" }
+        }
+      },
+      "VentaDTO": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "clienteId": { "type": "string" },
+          "fechaVenta": { "type": "string", "format": "date-time" },
+          "total": { "type": "number" },
+          "estado": { "type": "string" },
+          "lineasVenta": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/LineaVentaDTO" }
+          }
+        }
+      },
       "UpdateProductoDto": {
         "type": "object",
         "properties": {
@@ -675,6 +896,51 @@
         },
         "description": "Datos de un producto"
       },
+      "CreateLineaVentaDTO": {
+        "required": ["cantidad", "precioUnitario", "productoId"],
+        "type": "object",
+        "properties": {
+          "productoId": {
+            "type": "string",
+            "description": "ID del producto",
+            "example": "1"
+          },
+          "cantidad": {
+            "minimum": 1,
+            "type": "integer",
+            "description": "Cantidad de productos",
+            "format": "int32",
+            "example": 2
+          },
+          "precioUnitario": {
+            "minimum": 0.01,
+            "exclusiveMinimum": false,
+            "type": "number",
+            "description": "Precio unitario del producto",
+            "example": 100.0
+          }
+        },
+        "description": "Datos para crear una línea de venta"
+      },
+      "CreateVentaDTO": {
+        "required": ["clienteId", "lineasVenta"],
+        "type": "object",
+        "properties": {
+          "clienteId": {
+            "type": "string",
+            "description": "ID del cliente",
+            "example": "123"
+          },
+          "lineasVenta": {
+            "maxItems": 2147483647,
+            "minItems": 1,
+            "type": "array",
+            "description": "Lista de líneas de venta",
+            "items": { "$ref": "#/components/schemas/CreateLineaVentaDTO" }
+          }
+        },
+        "description": "Datos para crear una nueva venta"
+      },
       "AuthenticationRequest": {
         "required": ["email", "password"],
         "type": "object",
@@ -718,6 +984,25 @@
           }
         },
         "description": "Datos para crear un nuevo producto"
+      },
+      "MonedaConfigDto": {
+        "type": "object",
+        "properties": {
+          "monedaPorDefecto": {
+            "type": "string",
+            "description": "Código de la moneda por defecto",
+            "example": "USD"
+          },
+          "monedasSoportadas": {
+            "type": "array",
+            "description": "Lista de códigos de monedas soportadas",
+            "items": {
+              "type": "string",
+              "description": "Lista de códigos de monedas soportadas"
+            }
+          }
+        },
+        "description": "Configuración de monedas del sistema"
       },
       "TopProductoDTO": {
         "type": "object",
@@ -808,25 +1093,6 @@
           "numberOfElements": { "type": "integer", "format": "int32" }
         },
         "description": "Respuesta paginada genérica que contiene datos y metadatos de paginación"
-      },
-      "MonedaConfigDto": {
-        "type": "object",
-        "properties": {
-          "monedaPorDefecto": {
-            "type": "string",
-            "description": "Código de la moneda por defecto",
-            "example": "USD"
-          },
-          "monedasSoportadas": {
-            "type": "array",
-            "description": "Lista de códigos de monedas soportadas",
-            "items": {
-              "type": "string",
-              "description": "Lista de códigos de monedas soportadas"
-            }
-          }
-        },
-        "description": "Configuración de monedas del sistema"
       }
     },
     "securitySchemes": {
