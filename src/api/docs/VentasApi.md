@@ -4,7 +4,7 @@ All URIs are relative to *http://localhost:8080*
 
 |Method | HTTP request | Description|
 |------------- | ------------- | -------------|
-|[**create**](#create) | **POST** /api/ventas | |
+|[**create**](#create) | **POST** /api/ventas | Crear nuevo producto|
 |[**getAll**](#getall) | **GET** /api/ventas | |
 |[**getByClienteId**](#getbyclienteid) | **GET** /api/ventas/cliente/{clienteId} | |
 |[**getByEstado**](#getbyestado) | **GET** /api/ventas/estado/{estado} | |
@@ -14,6 +14,7 @@ All URIs are relative to *http://localhost:8080*
 # **create**
 > VentaDTO create(createVentaDTO)
 
+Crea un nuevo producto en el sistema
 
 ### Example
 
@@ -58,7 +59,8 @@ const { status, data } = await apiInstance.create(
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**200** | OK |  -  |
+|**400** | Datos de entrada inválidos |  -  |
+|**201** | Producto creado exitosamente |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

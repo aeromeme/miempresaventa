@@ -59,8 +59,8 @@ const { status, data } = await apiInstance.obtenerClientes(
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**400** | Parámetros de paginación inválidos |  -  |
 |**200** | Lista de clientes obtenida exitosamente |  -  |
+|**400** | Parámetros de paginación inválidos |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -175,8 +175,8 @@ const { status, data } = await apiInstance.obtenerClientesPorCorreo(
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**200** | Lista de clientes filtrada por correo obtenida exitosamente |  -  |
 |**400** | Parámetros inválidos o filtro de correo requerido |  -  |
+|**200** | Lista de clientes filtrada por correo obtenida exitosamente |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

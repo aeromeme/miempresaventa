@@ -6,7 +6,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **string** |  | [optional] [default to undefined]
-**clienteId** | **string** |  | [optional] [default to undefined]
+**cliente** | [**ClienteDto**](ClienteDto.md) |  | [optional] [default to undefined]
 **fechaVenta** | **string** |  | [optional] [default to undefined]
 **total** | **number** |  | [optional] [default to undefined]
 **estado** | **string** |  | [optional] [default to undefined]
@@ -19,7 +19,7 @@ import { VentaDTO } from './api';
 
 const instance: VentaDTO = {
     id,
-    clienteId,
+    cliente,
     fechaVenta,
     total,
     estado,

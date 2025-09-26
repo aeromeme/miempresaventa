@@ -129,11 +129,11 @@
           "required": true
         },
         "responses": {
-          "400": {
-            "description": "Datos de entrada inválidos",
+          "200": {
+            "description": "Producto actualizado exitosamente",
             "content": {
               "*/*": {
-                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
+                "schema": { "$ref": "#/components/schemas/ProductoDto" }
               }
             }
           },
@@ -145,11 +145,11 @@
               }
             }
           },
-          "200": {
-            "description": "Producto actualizado exitosamente",
+          "400": {
+            "description": "Datos de entrada inválidos",
             "content": {
               "*/*": {
-                "schema": { "$ref": "#/components/schemas/ProductoDto" }
+                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
               }
             }
           }
@@ -170,10 +170,6 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "Producto eliminado exitosamente",
-            "content": { "*/*": { "schema": { "type": "object" } } }
-          },
           "404": {
             "description": "Producto no encontrado",
             "content": {
@@ -181,6 +177,10 @@
                 "schema": { "$ref": "#/components/schemas/ProblemDetail" }
               }
             }
+          },
+          "204": {
+            "description": "Producto eliminado exitosamente",
+            "content": { "*/*": { "schema": { "type": "object" } } }
           }
         }
       }
@@ -205,6 +205,8 @@
       },
       "post": {
         "tags": ["Ventas"],
+        "summary": "Crear nuevo producto",
+        "description": "Crea un nuevo producto en el sistema",
         "operationId": "create",
         "requestBody": {
           "content": {
@@ -215,8 +217,16 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "400": {
+            "description": "Datos de entrada inválidos",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
+              }
+            }
+          },
+          "201": {
+            "description": "Producto creado exitosamente",
             "content": {
               "*/*": { "schema": { "$ref": "#/components/schemas/VentaDTO" } }
             }
@@ -239,7 +249,6 @@
           "required": true
         },
         "responses": {
-          "401": { "description": "Credenciales inválidas" },
           "200": {
             "description": "Autenticación exitosa",
             "content": {
@@ -249,7 +258,8 @@
                 }
               }
             }
-          }
+          },
+          "401": { "description": "Credenciales inválidas" }
         }
       }
     },
@@ -295,19 +305,19 @@
           "required": true
         },
         "responses": {
-          "400": {
-            "description": "Datos de entrada inválidos",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
-              }
-            }
-          },
           "201": {
             "description": "Producto creado exitosamente",
             "content": {
               "*/*": {
                 "schema": { "$ref": "#/components/schemas/ProductoDto" }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos de entrada inválidos",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
               }
             }
           }
@@ -572,19 +582,19 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "Parámetros de paginación inválidos",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
-              }
-            }
-          },
           "200": {
             "description": "Lista de clientes obtenida exitosamente",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/PagedResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Parámetros de paginación inválidos",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ProblemDetail" }
               }
             }
           }
@@ -728,19 +738,19 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Lista de clientes filtrada por correo obtenida exitosamente",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/PagedResponse" }
-              }
-            }
-          },
           "400": {
             "description": "Parámetros inválidos o filtro de correo requerido",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/ProblemDetail" }
+              }
+            }
+          },
+          "200": {
+            "description": "Lista de clientes filtrada por correo obtenida exitosamente",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PagedResponse" }
               }
             }
           }
@@ -800,6 +810,27 @@
         },
         "description": "Datos para actualizar una venta"
       },
+      "ClienteDto": {
+        "type": "object",
+        "properties": {
+          "clienteId": {
+            "type": "string",
+            "description": "Identificador único del cliente",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "nombre": {
+            "type": "string",
+            "description": "Nombre completo del cliente",
+            "example": "Juan Pérez Martínez"
+          },
+          "correo": {
+            "type": "string",
+            "description": "Correo electrónico del cliente",
+            "example": "juan.perez@email.com"
+          }
+        },
+        "description": "Datos de un cliente"
+      },
       "LineaVentaDTO": {
         "type": "object",
         "properties": {
@@ -813,7 +844,7 @@
         "type": "object",
         "properties": {
           "id": { "type": "string" },
-          "clienteId": { "type": "string" },
+          "cliente": { "$ref": "#/components/schemas/ClienteDto" },
           "fechaVenta": { "type": "string", "format": "date-time" },
           "total": { "type": "number" },
           "estado": { "type": "string" },
@@ -850,20 +881,6 @@
         },
         "description": "Datos para actualizar un producto existente. La moneda no se puede cambiar."
       },
-      "ProblemDetail": {
-        "type": "object",
-        "properties": {
-          "type": { "type": "string", "format": "uri" },
-          "title": { "type": "string" },
-          "status": { "type": "integer", "format": "int32" },
-          "detail": { "type": "string" },
-          "instance": { "type": "string", "format": "uri" },
-          "properties": {
-            "type": "object",
-            "additionalProperties": { "type": "object" }
-          }
-        }
-      },
       "ProductoDto": {
         "type": "object",
         "properties": {
@@ -895,6 +912,20 @@
           }
         },
         "description": "Datos de un producto"
+      },
+      "ProblemDetail": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string", "format": "uri" },
+          "title": { "type": "string" },
+          "status": { "type": "integer", "format": "int32" },
+          "detail": { "type": "string" },
+          "instance": { "type": "string", "format": "uri" },
+          "properties": {
+            "type": "object",
+            "additionalProperties": { "type": "object" }
+          }
+        }
       },
       "CreateLineaVentaDTO": {
         "required": ["cantidad", "precioUnitario", "productoId"],
@@ -1089,8 +1120,8 @@
             "description": "Indica si hay página anterior",
             "example": false
           },
-          "empty": { "type": "boolean" },
-          "numberOfElements": { "type": "integer", "format": "int32" }
+          "numberOfElements": { "type": "integer", "format": "int32" },
+          "empty": { "type": "boolean" }
         },
         "description": "Respuesta paginada genérica que contiene datos y metadatos de paginación"
       }

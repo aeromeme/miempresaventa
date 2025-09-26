@@ -15,8 +15,8 @@ Name | Type | Description | Notes
 **last** | **boolean** | Indica si es la última página | [optional] [default to undefined]
 **hasNext** | **boolean** | Indica si hay página siguiente | [optional] [default to undefined]
 **hasPrevious** | **boolean** | Indica si hay página anterior | [optional] [default to undefined]
-**empty** | **boolean** |  | [optional] [default to undefined]
 **numberOfElements** | **number** |  | [optional] [default to undefined]
+**empty** | **boolean** |  | [optional] [default to undefined]
 
 ## Example
 
@@ -33,8 +33,8 @@ const instance: PagedResponse = {
     last,
     hasNext,
     hasPrevious,
-    empty,
     numberOfElements,
+    empty,
 };
 ```
 

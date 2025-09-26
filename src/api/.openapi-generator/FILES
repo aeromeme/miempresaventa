@@ -7,6 +7,7 @@ configuration.ts
 docs/AutenticacinApi.md
 docs/AuthenticationRequest.md
 docs/AuthenticationResponse.md
+docs/ClienteDto.md
 docs/ClienteIngresosDTO.md
 docs/ClientesApi.md
 docs/CreateLineaVentaDTO.md

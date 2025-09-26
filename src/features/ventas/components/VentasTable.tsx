@@ -4,7 +4,6 @@ import type { DataTableFilterMeta } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Card } from "primereact/card";
 import { Tag } from "primereact/tag";
-import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { FilterMatchMode } from "primereact/api";
 import type { VentaDTO } from "../../../../src/api/api";
@@ -104,8 +103,9 @@ const VentasTable: React.FC<VentasTableProps> = ({
           hidden={true}
         />
         <Column
-          field="clienteId"
+          field="cliente.nombre"
           header="Cliente"
+          body={(rowData: VentaDTO) => rowData.cliente?.nombre || "-"}
           sortable
           style={{ minWidth: "180px" }}
           className="font-medium"

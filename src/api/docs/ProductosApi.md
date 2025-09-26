@@ -63,9 +63,9 @@ const { status, data } = await apiInstance.actualizar(
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**400** | Datos de entrada inválidos |  -  |
-|**404** | Producto no encontrado |  -  |
 |**200** | Producto actualizado exitosamente |  -  |
+|**404** | Producto no encontrado |  -  |
+|**400** | Datos de entrada inválidos |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -169,8 +169,8 @@ const { status, data } = await apiInstance.crear(
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**400** | Datos de entrada inválidos |  -  |
 |**201** | Producto creado exitosamente |  -  |
+|**400** | Datos de entrada inválidos |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -221,8 +221,8 @@ const { status, data } = await apiInstance.eliminar(
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**204** | Producto eliminado exitosamente |  -  |
 |**404** | Producto no encontrado |  -  |
+|**204** | Producto eliminado exitosamente |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

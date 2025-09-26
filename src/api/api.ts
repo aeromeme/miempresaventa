@@ -30,6 +30,23 @@ export interface AuthenticationRequest {
 export interface AuthenticationResponse {
     'token'?: string;
 }
+/**
+ * Datos de un cliente
+ */
+export interface ClienteDto {
+    /**
+     * Identificador único del cliente
+     */
+    'clienteId'?: string;
+    /**
+     * Nombre completo del cliente
+     */
+    'nombre'?: string;
+    /**
+     * Correo electrónico del cliente
+     */
+    'correo'?: string;
+}
 export interface ClienteIngresosDTO {
     'id'?: string;
     'nombre'?: string;
@@ -151,8 +168,8 @@ export interface PagedResponse {
      * Indica si hay página anterior
      */
     'hasPrevious'?: boolean;
-    'empty'?: boolean;
     'numberOfElements'?: number;
+    'empty'?: boolean;
 }
 export interface ProblemDetail {
     'type'?: string;
@@ -246,7 +263,7 @@ export interface UpdateVentaDTO {
 }
 export interface VentaDTO {
     'id'?: string;
-    'clienteId'?: string;
+    'cliente'?: ClienteDto;
     'fechaVenta'?: string;
     'total'?: number;
     'estado'?: string;
@@ -1288,7 +1305,8 @@ export class ProductosApi extends BaseAPI {
 export const VentasApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * 
+         * Crea un nuevo producto en el sistema
+         * @summary Crear nuevo producto
          * @param {CreateVentaDTO} createVentaDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1523,7 +1541,8 @@ export const VentasApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = VentasApiAxiosParamCreator(configuration)
     return {
         /**
-         * 
+         * Crea un nuevo producto en el sistema
+         * @summary Crear nuevo producto
          * @param {CreateVentaDTO} createVentaDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1604,7 +1623,8 @@ export const VentasApiFactory = function (configuration?: Configuration, basePat
     const localVarFp = VentasApiFp(configuration)
     return {
         /**
-         * 
+         * Crea un nuevo producto en el sistema
+         * @summary Crear nuevo producto
          * @param {CreateVentaDTO} createVentaDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1665,7 +1685,8 @@ export const VentasApiFactory = function (configuration?: Configuration, basePat
  */
 export class VentasApi extends BaseAPI {
     /**
-     * 
+     * Crea un nuevo producto en el sistema
+     * @summary Crear nuevo producto
      * @param {CreateVentaDTO} createVentaDTO 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
