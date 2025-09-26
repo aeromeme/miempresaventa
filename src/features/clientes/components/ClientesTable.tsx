@@ -34,7 +34,7 @@ const ClientesTable: React.FC<ClientesTableProps> = ({
   // Reiniciar el filtro cuando cambie la paginación externamente
   useEffect(() => {
     if (pagination) {
-      console.log("Pagination changed:", pagination);
+
     }
   }, [pagination]);
 
@@ -72,10 +72,10 @@ const ClientesTable: React.FC<ClientesTableProps> = ({
         first={pagination?.page ? pagination.page * pagination.size : 0}
         totalRecords={pagination?.totalElements}
         onPage={(e: any) => {
-          console.log("DataTable onPage:", e);
+
           if (onPageChange) {
             const newPage = Math.floor(e.first / e.rows);
-            console.log("Calculated new page:", newPage);
+
             onPageChange(newPage, e.rows);
           }
         }}

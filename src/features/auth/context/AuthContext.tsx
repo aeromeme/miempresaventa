@@ -35,16 +35,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       try {
         // Decodificar el JWT para obtener los roles
         const payload = JSON.parse(atob(token.split(".")[1]));
-        console.log("Initial JWT payload:", payload); // Debug: ver el contenido inicial del JWT
+
         const roles =
           payload.roles || payload.authorities || payload.scope?.split(" ");
-        console.log("Initial roles:", roles); // Debug: ver los roles iniciales
+
         return {
           roles: Array.isArray(roles) ? roles : [roles],
         };
       } catch (e) {
-        console.error("Error decoding token:", e);
-        console.error("Stored token:", token); // Debug: ver el token almacenado
+
+
         return null;
       }
     }
@@ -58,16 +58,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
       try {
         const payload = JSON.parse(atob(response.token.split(".")[1]));
-        console.log("JWT payload:", payload); // Debug: ver el contenido del JWT
         const roles =
           payload.roles || payload.authorities || payload.scope?.split(" ");
-        console.log("Roles extraídos:", roles); // Debug: ver los roles extraídos
         setUser({
           roles: Array.isArray(roles) ? roles : [roles],
         });
       } catch (e) {
-        console.error("Error decoding token:", e);
-        console.error("Token:", response.token); // Debug: ver el token que causó el error
+
       }
     }
   }, []);
