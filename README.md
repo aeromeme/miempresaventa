@@ -44,7 +44,7 @@ Mi Venta es una aplicación web para la gestión de ventas, clientes y productos
    git clone https://github.com/aeromeme/miempresaventa.git
    cd miempresaventa
    ```
-2. Construye y ejecuta los servicios con Docker Compose:
+2. Construye y ejecuta los servicios con Docker Compose, o corre el backend,bd y frontend desde el docker compose del backend, unico requisito estar ambos proyectos en una misma carpeta:
    ```powershell
    docker-compose up --build
    ```
